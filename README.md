@@ -1,25 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# **UHM Custodian Manager**
 
-## Getting Started
+Internal UH Mānoa Office of Human Resources app to manage and distribute custodial work assignments evenly.
 
-First, run the development server:
+## **Table of Contents**
+1. [Project Structure](#project-structure)
+2. [How to run the app](#how-to-run-the-app)
+3. [Learn More](#learn-more)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## **Project Structure**
+
+TBA
+
+## **How to run the app**
+
+### **Prerequisites**
+Ensure you have node installed. You can check whether you have node.js with:
+
+```sh
+node -v
+npm -v
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Both commands should print a version number. If a version number is not printed or node has not been installed, download and install it from [here](https://nodejs.org/en/download)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### **Setup Instructions**
+1. **Clone the repository**  
+   Open a terminal and run:
 
+   ```sh
+   git clone https://github.com/8bitUHM/uhm-custodian-manager.git
+   cd uhm-custodian-manager
+   ```
+2. **Install dependencies**  
+   ```sh
+   npm install
+   ```
+3. Start the development server:
+    ```sh
+    npm run dev
+    ```
+4. Open the application in your browser:
+
+   - By default, the development server runs on `http://localhost:3000`.
+
+---
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
@@ -27,10 +55,5 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### **License**
+This project is maintained by ***8bit***.
