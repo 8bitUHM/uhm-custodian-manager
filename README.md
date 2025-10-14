@@ -5,7 +5,8 @@ Internal UH Mānoa Office of Human Resources app to manage and distribute custod
 ## **Table of Contents**
 1. [Project Structure](#project-structure)
 2. [How to run the app](#how-to-run-the-app)
-3. [Learn More](#learn-more)
+3. [Adding a new route entry point](#adding-a-new-route-entry-point)
+4. [Learn More](#learn-more)
 
 ---
 
@@ -46,6 +47,14 @@ Both commands should print a version number. If a version number is not printed 
 4. Open the application in your browser:
 
    - By default, the development server runs on `http://localhost:3000`.
+
+---
+## Adding a new route entry point
+1. **Make a new folder of what the page will be in the app folder**
+2.	**Make a tsx file that's named "page.tsx" in the same folder that you created**
+3.	**Add your content on there**
+4.	**Whatever is the folder name will represent the link name**
+ex: If i make a folder named "about-me" and I make a page.tsx in the "about-me" folder, the link that will show the content within the same folder will be localhost:3000/about-me
 
 ---
 ## Learn More
