@@ -64,5 +64,10 @@ To learn more about Next.js, take a look at the following resources:
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
+To learn more about Prisma, look at the following resources:
+
+- [Prisma Documentation](https://www.prisma.io/docs/) - learn about Prisma's ORM features.
+- [How to use Prisma ORM with Next.js](https://www.prisma.io/docs/guides/nextjs) - learn the basics of using Prisma ORM with Next.js, Typescript, React, and PostgreSQL. 
+
 ### **License**
 This project is maintained by ***8bit***.
