@@ -1,73 +1,153 @@
-# **UHM Custodian Manager**
+# Custodian Manager Dashboard
 
-Internal UH Mānoa Office of Human Resources app to manage and distribute custodial work assignments evenly.
+A comprehensive custodian management system built with React, TypeScript, Tailwind CSS, FastAPI, and PostgreSQL, all containerized with Docker Compose.
 
-## **Table of Contents**
-1. [Project Structure](#project-structure)
-2. [How to run the app](#how-to-run-the-app)
-3. [Adding a new route entry point](#adding-a-new-route-entry-point)
-4. [Learn More](#learn-more)
+## Features
 
----
+- **Dashboard Overview**: Real-time statistics and activity monitoring
+- **Custodian Management**: Add, edit, and track custodian information
+- **Building Management**: Manage buildings and their details
+- **Task Management**: Create, assign, and track cleaning and maintenance tasks
+- **Responsive Design**: Modern UI with Tailwind CSS
+- **RESTful API**: FastAPI backend with automatic documentation
 
-## **Project Structure**
+## Tech Stack
 
-TBA
+### Frontend
+- React 18 with TypeScript
+- Next.js 14
+- Tailwind CSS for styling
+- Lucide React for icons
+- Axios for API calls
 
-## **How to run the app**
+### Backend
+- FastAPI with Python 3.11
+- SQLAlchemy ORM
+- PostgreSQL database
+- Pydantic for data validation
+- Alembic for database migrations
 
-### **Prerequisites**
-Ensure you have node installed. You can check whether you have node.js with:
+### Infrastructure
+- Docker & Docker Compose
+- PostgreSQL 15
+- Multi-container setup
 
-```sh
-node -v
-npm -v
+## Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd custodian-manager
+   ```
+
+2. **Start the application**
+   ```bash
+   docker-compose up --build
+   ```
+
+3. **Access the application**
+   - Frontend: http://localhost:3000
+   - Backend API: http://localhost:8000
+   - API Documentation: http://localhost:8000/docs
+
+## Development
+
+### Running Individual Services
+
+**Frontend only:**
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
-Both commands should print a version number. If a version number is not printed or node has not been installed, download and install it from [here](https://nodejs.org/en/download)
+**Backend only:**
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
 
----
+**Database only:**
+```bash
+docker-compose up db
+```
 
-### **Setup Instructions**
-1. **Clone the repository**  
-   Open a terminal and run:
+### Environment Variables
 
-   ```sh
-   git clone https://github.com/8bitUHM/uhm-custodian-manager.git
-   cd uhm-custodian-manager
-   ```
-2. **Install dependencies**  
-   ```sh
-   npm install
-   ```
-3. Start the development server:
-    ```sh
-    npm run dev
-    ```
-4. Open the application in your browser:
+Copy `env.example` to `.env` and modify as needed:
+```bash
+cp env.example .env
+```
 
-   - By default, the development server runs on `http://localhost:3000`.
+## API Endpoints
 
----
-## Adding a new route entry point
-1. **Make a new folder of what the page will be in the app folder**
-2.	**Make a tsx file that's named "page.tsx" in the same folder that you created**
-3.	**Add your content on there**
-4.	**Whatever is the folder name will represent the link name**
-ex: If i make a folder named "about-me" and I make a page.tsx in the "about-me" folder, the link that will show the content within the same folder will be localhost:3000/about-me
+### Dashboard
+- `GET /api/dashboard/stats` - Get dashboard statistics
 
----
-## Learn More
+### Custodians
+- `GET /api/custodians/` - List all custodians
+- `POST /api/custodians/` - Create new custodian
+- `GET /api/custodians/{id}` - Get custodian by ID
 
-To learn more about Next.js, take a look at the following resources:
+### Buildings
+- `GET /api/buildings/` - List all buildings
+- `POST /api/buildings/` - Create new building
+- `GET /api/buildings/{id}` - Get building by ID
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Tasks
+- `GET /api/tasks/` - List all tasks
+- `POST /api/tasks/` - Create new task
+- `GET /api/tasks/{id}` - Get task by ID
 
-To learn more about Prisma, look at the following resources:
+## Database Schema
 
-- [Prisma Documentation](https://www.prisma.io/docs/) - learn about Prisma's ORM features.
-- [How to use Prisma ORM with Next.js](https://www.prisma.io/docs/guides/nextjs) - learn the basics of using Prisma ORM with Next.js, Typescript, React, and PostgreSQL. 
+### Custodians
+- Personal information (name, email, phone)
+- Employee ID and status
+- Hire date and timestamps
 
-### **License**
-This project is maintained by ***8bit***.
+### Buildings
+- Building details (name, address, code)
+- Floor count and description
+- Active status
+
+### Tasks
+- Task details (title, description, priority)
+- Assignment to custodians and buildings
+- Status tracking and scheduling
+
+## Project Structure
+
+```
+custodian-manager/
+├── frontend/                 # Next.js React application
+│   ├── src/
+│   │   ├── app/             # App router pages
+│   │   └── components/      # Reusable components
+│   ├── Dockerfile
+│   └── package.json
+├── backend/                  # FastAPI application
+│   ├── main.py              # FastAPI app and routes
+│   ├── models.py            # SQLAlchemy models
+│   ├── schemas.py           # Pydantic schemas
+│   ├── crud.py              # Database operations
+│   ├── database.py          # Database configuration
+│   ├── Dockerfile
+│   └── requirements.txt
+├── docker-compose.yml       # Multi-container setup
+├── init.sql                 # Database initialization
+└── README.md
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.
