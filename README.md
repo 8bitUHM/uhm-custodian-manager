@@ -34,18 +34,37 @@ A comprehensive custodian management system built with React, TypeScript, Tailwi
 
 ## Quick Start
 
+### **Prerequisites**
+Ensure you have **Python 3.8+** installed. You can check your Python version with:
+
+```sh
+python --version
+```
+
+or
+
+```sh
+python3 --version
+```
+
+If Python is not installed, download and install it from [python.org](https://www.python.org/downloads/).
+
+Should have docker desktop installed. If you are unsure what docker desktop is, please refer to [Section 4-6 of Infrastructure & DevOps](https://8bithawaii.org/learning/lessons/infrastructure-devops).
+
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd custodian-manager
+   git clone https://github.com/8bitUHM/uhm-custodian-manager.git
+   cd uhm-custodian-manager
    ```
 
-2. **Start the application**
+2. **Start up docker desktop**
+
+3. **Start the application**
    ```bash
    docker-compose up --build
    ```
 
-3. **Access the application**
+4. **Access the application**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
