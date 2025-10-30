@@ -49,7 +49,9 @@ python3 --version
 
 If Python is not installed, download and install it from [python.org](https://www.python.org/downloads/).
 
-Should have docker desktop installed. If you are unsure what docker desktop is, please refer to [Section 4-6 of Infrastructure & DevOps](https://8bithawaii.org/learning/lessons/infrastructure-devops).
+Node is also needed for this project. Download and install node from [here](https://nodejs.org/en/download) if it is not installed.
+
+Should have [**Docker Desktop**](https://www.docker.com/get-started/) installed. If you are unsure what docker desktop is, please refer to [Section 4-6 of Infrastructure & DevOps](https://8bithawaii.org/learning/lessons/infrastructure-devops).
 
 1. **Clone the repository**
    ```bash
@@ -63,8 +65,12 @@ Should have docker desktop installed. If you are unsure what docker desktop is, 
    ```bash
    docker-compose up --build
    ```
+   If you are running the application on macOS
+   ```bash
+   docker compose up --build
+   ```
 
-4. **Access the application**
+5. **Access the application**
    - Frontend: http://localhost:3000
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
