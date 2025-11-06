@@ -59,7 +59,7 @@ const NavBar = () => {
           onClick={() => setIsOpen(false)}
           className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
         >
-          ✕
+          
         </button>
 
         <ul className="flex flex-col items-start space-y-4 p-6 mt-10">
