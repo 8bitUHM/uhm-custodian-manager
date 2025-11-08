@@ -2,6 +2,19 @@
 
 A comprehensive custodian management system built with React, TypeScript, Tailwind CSS, FastAPI, and PostgreSQL, all containerized with Docker Compose.
 
+## **Table of Contents**
+1. [Features](#features)
+2. [Tech Stack](#tech-stack)
+3. [Quick Start](#quick-start)
+4. [Development](#development)
+5. [API endpoints](#api-endpoints)
+6. [Database Schema](#database-schema)
+7. [Project Structure](#project-structure)
+8. [Contributing](#contributing)
+9. [License](#license)
+
+---
+
 ## Features
 
 - **Dashboard Overview**: Real-time statistics and activity monitoring
@@ -104,6 +117,13 @@ Copy `env.example` to `.env` and modify as needed:
 ```bash
 cp env.example .env
 ```
+
+### How to add a new page and route entry point
+1. Make a new folder of what the page will be in the src\app folder
+2.	Make a tsx file that's named "page.tsx" in the same folder that you created
+3.	Add your content on there
+4.	Whatever is the folder name will represent the link name
+ex: If i make a folder named "about-me" in the src\app folder and I make a page.tsx in the "about-me" folder, the link that will show the content within the same folder will be localhost:3000/about-me
 
 ## API Endpoints
 
