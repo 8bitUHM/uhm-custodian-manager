@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Users, Building, Calendar, TrendingUp } from 'lucide-react'
+import Link from 'next/link'
 
 interface DashboardStats {
   totalCustodians: number
@@ -142,10 +143,10 @@ export default function Dashboard() {
             </div>
             <div className="p-6">
               <div className="grid grid-cols-2 gap-4">
-                <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
+                <Link href="/custodian/add" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center">
                   <Users className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">Add Custodian</p>
-                </button>
+                </Link>
                 <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
                   <Building className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">Add Building</p>
