@@ -77,6 +77,10 @@ Should have [**Docker Desktop**](https://www.docker.com/get-started/) installed.
 
 ## Development
 
+### Pulling from main (after PR is merged)
+Make sure to re-run `docker-compose up --build` to get the project running. 
+For frontend, you will need to run `npm install` before running the compose.
+
 ### Running Individual Services
 
 **Frontend only:**
