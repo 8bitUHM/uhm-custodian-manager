@@ -74,7 +74,7 @@ export default function Dashboard() {
               <p className="text-gray-600">Dashboard Overview</p>
             </div>
             <div className="flex space-x-4">
-              <button onClick={() => (window.location.href = "/addcustodian")} className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
+              <button onClick={() => (window.location.href = "/custodian/add")} className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
                 Add Custodian
               </button>
               <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">
