@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from 'next/link';
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,10 +15,10 @@ const NavBar = () => {
 
         {/* Right: Desktop Menu */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#" className="text-gray-900 hover:text-blue-700">Custodians</a>
-          <a href="#" className="text-gray-900 hover:text-blue-700">Buildings</a>
-          <a href="#" className="text-gray-900 hover:text-blue-700">Tasks</a>
-          <a href="#" className="text-gray-900 hover:text-blue-700">Reports</a>
+          <Link href="/custodian" className="text-gray-900 hover:text-blue-700">Custodians</Link>
+          <Link href="#" className="text-gray-900 hover:text-blue-700">Buildings</Link>
+          <Link href="#" className="text-gray-900 hover:text-blue-700">Tasks</Link>
+          <Link href="#" className="text-gray-900 hover:text-blue-700">Reports</Link>
           <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">
             Settings
           </button>
@@ -63,10 +64,10 @@ const NavBar = () => {
         </button>
 
         <ul className="flex flex-col items-start space-y-4 p-6 mt-10">
-          <li><a href="#" className="text-gray-900 hover:text-blue-700">Custodians</a></li>
-          <li><a href="#" className="text-gray-900 hover:text-blue-700">Buildings</a></li>
-          <li><a href="#" className="text-gray-900 hover:text-blue-700">Tasks</a></li>
-          <li><a href="#" className="text-gray-900 hover:text-blue-700">Reports</a></li>
+          <li><Link href="#" className="text-gray-900 hover:text-blue-700">Custodians</Link></li>
+          <li><Link href="#" className="text-gray-900 hover:text-blue-700">Buildings</Link></li>
+          <li><Link href="#" className="text-gray-900 hover:text-blue-700">Tasks</Link></li>
+          <li><Link href="#" className="text-gray-900 hover:text-blue-700">Reports</Link></li>
           <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">
             Settings
           </button>
