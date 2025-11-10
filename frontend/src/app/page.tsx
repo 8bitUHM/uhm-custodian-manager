@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { Users, Building, Calendar, TrendingUp } from 'lucide-react'
-import NavBar from './components/Navbar'
 
 interface DashboardStats {
   totalCustodians: number
@@ -66,7 +65,24 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <NavBar />
+      <header className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Custodian Manager</h1>
+              <p className="text-gray-600">Dashboard Overview</p>
+            </div>
+            <div className="flex space-x-4">
+              <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
+                Add Custodian
+              </button>
+              <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">
+                Settings
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -126,22 +142,22 @@ export default function Dashboard() {
             </div>
             <div className="p-6">
               <div className="grid grid-cols-2 gap-4">
-                <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
+                <Link href="/custodian/add" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center">
                   <Users className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">Add Custodian</p>
-                </button>
-                <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
+                </Link>
+                <Link href="/CHANGEME" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center">
                   <Building className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">Add Building</p>
-                </button>
-                <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
+                </Link>
+                <Link href="/CHANGEME" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center">
                   <Calendar className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">Schedule Task</p>
-                </button>
-                <button className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors">
+                </Link>
+                <Link href="/CHANGEME" className="p-4 border-2 border-dashed border-gray-300 rounded-lg hover:border-primary-500 hover:bg-primary-50 transition-colors text-center">
                   <TrendingUp className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                   <p className="text-sm text-gray-600">View Reports</p>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
