@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Users, Building, Calendar, TrendingUp } from 'lucide-react'
 import Link from 'next/link'
+import NavBar from './components/Navbar'
 
 interface DashboardStats {
   totalCustodians: number
@@ -66,24 +67,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Custodian Manager</h1>
-              <p className="text-gray-600">Dashboard Overview</p>
-            </div>
-            <div className="flex space-x-4">
-              <button onClick={() => (window.location.href = "/addcustodian")} className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
-                Add Custodian
-              </button>
-              <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors">
-                Settings
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <NavBar />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
