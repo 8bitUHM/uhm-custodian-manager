@@ -14,14 +14,14 @@ const NavBar = () => {
         </div>
 
         {/* Right: Desktop Menu */}
-        <nav className="hidden md:flex items-center space-x-6">
-          <Link href="/custodian" className="text-gray-900 hover:text-blue-700">Custodians</Link>
-          <Link href="#" className="text-gray-900 hover:text-blue-700">Buildings</Link>
-          <Link href="#" className="text-gray-900 hover:text-blue-700">Tasks</Link>
-          <Link href="#" className="text-gray-900 hover:text-blue-700">Reports</Link>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">
+        <nav className="hidden md:flex items-center space-x-6 text-lg">
+          <Link href="/custodian" className="text-gray-900 hover:text-blue-700 transition-colors duration-200">Custodians</Link>
+          <Link href="#" className="text-gray-900 hover:text-blue-700 transition-colors duration-200">Buildings</Link>
+          <Link href="#" className="text-gray-900 hover:text-blue-700 transition-colors duration-200">Tasks</Link>
+          <Link href="#" className="text-gray-900 hover:text-blue-700 transition-colors duration-200">Reports</Link>
+          {/* <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">
             Settings
-          </button>
+          </button> */}
         </nav>
 
         {/* Hamburger (mobile only) */}
@@ -68,9 +68,9 @@ const NavBar = () => {
           <li><Link href="#" className="text-gray-900 hover:text-blue-700">Buildings</Link></li>
           <li><Link href="#" className="text-gray-900 hover:text-blue-700">Tasks</Link></li>
           <li><Link href="#" className="text-gray-900 hover:text-blue-700">Reports</Link></li>
-          <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">
+          {/* <button className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300">
             Settings
-          </button>
+          </button> */}
         </ul>
       </div>
     </header>
