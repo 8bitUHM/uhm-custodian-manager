@@ -169,7 +169,7 @@ ex: If i make a folder named "about-me" in the src\app folder and I make a page.
 ## Project Structure
 
 ```
-custodian-manager/
+uhm-custodian-manager/
 ├── frontend/                 # Next.js React application
 │   ├── src/
 │   │   ├── app/             # App router pages
