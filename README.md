@@ -64,7 +64,7 @@ If Python is not installed, download and install it from [python.org](https://ww
 
 Node is also needed for this project. Download and install node from [here](https://nodejs.org/en/download) if it is not installed.
 
-Should have [**Docker Desktop**](https://www.docker.com/get-started/) installed. If you are unsure what docker desktop is, please refer to [Section 4-6 of Infrastructure & DevOps](https://8bithawaii.org/learning/lessons/infrastructure-devops).
+Should have Docker Desktop installed. Download and install docker desktop [here](https://www.docker.com/get-started/). If you are unsure what docker desktop is, please refer to [Section 4-6 of Infrastructure & DevOps](https://8bithawaii.org/learning/lessons/infrastructure-devops).
 
 1. **Clone the repository**
    ```bash
