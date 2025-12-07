@@ -3,7 +3,7 @@ from typing import Optional, List
 from datetime import datetime
 from models import TaskStatus
 
-# Custodian schemas
+Custodian schemas
 class CustodianBase(BaseModel):
     first_name: str
     last_name: str
@@ -21,6 +21,33 @@ class CustodianResponse(CustodianBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
+    class Config:
+        from_attributes = True
+
+# Supervisor schemas
+class SupervisorBase(BaseModel):
+    id: int
+    name: str
+
+class SupervisorCreate(SupervisorBase):
+    pass
+
+class SupervisorResponse(SupervisorBase):
+    j3_list: list[J3Response] = []
+
+    class Config:
+        from_attributes = True
+
+# J3 schemas
+class J3Base(BaseModel):
+    id: int
+    name: str
+    supervisor_id: int
+
+class J3Create(J3Base):
+    pass
+
+class J3Response(J3Base):
     class Config:
         from_attributes = True
 
