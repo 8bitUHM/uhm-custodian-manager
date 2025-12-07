@@ -6,11 +6,12 @@ import os
 
 from database import get_db, engine
 from models import Base
-from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse
+from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse
 from crud import (
     create_custodian, get_custodians, get_custodian,
     create_building, get_buildings, get_building,
     create_task, get_tasks, get_task
+    create_supervisor, get_supervisors, get_supervisor
 )
 
 # Create database tables
@@ -73,6 +74,23 @@ async def get_custodian_endpoint(custodian_id: int, db: Session = Depends(get_db
     if custodian is None:
         raise HTTPException(status_code=404, detail="Custodian not found")
     return custodian
+
+# Supervisor endpoints
+@app.post("/api/supervisors/", response_model=SupervisorResponse)
+async def create_supervisor_endpoint(supervisor: SupervisorCreate, db: Session = Depends(get_db)):
+    return create_supervisor(db=db, supervisor=supervisor)
+
+@app.get("/api/supervisors/", response_model=List[SupervisorResponse])
+async def get_supervisors_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    supervisors = get_supervisors(db, skip=skip, limit=limit)
+    return supervisors
+
+@app.get("/api/supervisors/{supervisor_id}", response_model=SupervisorResponse)
+async def get_supervisors_endpoint(supervisor_id: int, db: Session = Depends(get_db)):
+    supervisor = get_supervisor(db, supervisor_id=supervisor_id)
+    if supervisor is None:
+        raise HTTPException(status_code=404, detail="Supervisor not found")
+    return supervisor
 
 # Building endpoints
 @app.post("/api/buildings/", response_model=BuildingResponse)
