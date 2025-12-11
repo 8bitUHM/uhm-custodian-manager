@@ -76,7 +76,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             <button
               onClick={closeToast}
               className={`${style.text} hover:opacity-70 transition-opacity`}
-              aria-label="Close toast"
+              aria-label={`Close ${type} message`}
             >
               <X className="h-4 w-4" />
             </button>
