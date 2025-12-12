@@ -6,12 +6,13 @@ import os
 
 from database import get_db, engine
 from models import Base
-from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse
+from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse, J3Create, J3Response
 from crud import (
     create_custodian, get_custodians, get_custodian,
     create_building, get_buildings, get_building,
-    create_task, get_tasks, get_task
-    create_supervisor, get_supervisors, get_supervisor
+    create_task, get_tasks, get_task,
+    create_supervisor, get_supervisors, get_supervisor,
+    create_j3, get_j3s, get_j3
 )
 
 # Create database tables
@@ -74,6 +75,23 @@ async def get_custodian_endpoint(custodian_id: int, db: Session = Depends(get_db
     if custodian is None:
         raise HTTPException(status_code=404, detail="Custodian not found")
     return custodian
+
+# j3 endpoints
+@app.post("/api/j3s/", response_model=J3Response)
+async def create_j3_endpoint(j3: J3Create, db: Session = Depends(get_db)):
+    return create_j3(db=db, j3=j3)
+
+@app.get("/api/j3s/", response_model=List[J3Response])
+async def get_j3s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    j3s = get_j3s(db, skip=skip, limit=limit)
+    return j3s
+
+@app.get("/api/j3s/{j3_id}", response_model=J3Response)
+async def get_j3s_endpoint(j3_id: int, db: Session = Depends(get_db)):
+    j3 = get_j3(db, j3_id=j3_id)
+    if j3 is None:
+        raise HTTPException(status_code=404, detail="J3 not found")
+    return j3
 
 # Supervisor endpoints
 @app.post("/api/supervisors/", response_model=SupervisorResponse)
