@@ -4,6 +4,34 @@ from models import Custodian, Building, Task, TaskStatus, Supervisor, J3
 from schemas import CustodianCreate, BuildingCreate, TaskCreate, SupervisorCreate, J3Create
 
 # J3
+def create_j3(db: Session, j3: J3Create):
+    db_j3 = J3(**j3.dict())
+    db.add(db_j3)
+    db.commit()
+    db.refresh(db_j3)
+    return db_j3
+
+def get_j3(db: Session, j3_id: int):
+    return db.query(J3).filter(J3.id == j3_id).first()
+
+def get_j3s(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(J3).offset(skip).limit(limit).all()
+
+def update_j3(db: Session, j3_id: int, j3_update: dict):
+    db_j3 = db.query(J3).filter(J3.id == j3_id).first()
+    if db_j3:
+        for key, value in j3_update.items():
+            setattr(db_j3, key, value)
+        db.commit()
+        db.refresh(db_j3)
+    return db_j3
+
+def delete_j3(db: Session, j3_id: int):
+    db_j3 = db.query(J3).filter(J3.id == j3_id).first()
+    if db_j3:
+        db.delete(db_j3)
+        db.commit()
+    return db_j3
 
 # Supervisor CRUD operations
 def create_supervisor(db: Session, supervisor: SupervisorCreate):
