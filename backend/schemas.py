@@ -46,7 +46,7 @@ class SupervisorCreate(SupervisorBase):
     pass
 
 class SupervisorResponse(SupervisorBase):
-    j3_list: list["J3Response"] = []
+    j3_list: list[int] = []
 
     class Config:
         from_attributes = True
