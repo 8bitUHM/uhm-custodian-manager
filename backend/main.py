@@ -101,14 +101,21 @@ async def create_supervisor_endpoint(supervisor: SupervisorCreate, db: Session =
 @app.get("/api/supervisors/", response_model=List[SupervisorResponse])
 async def get_supervisors_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     supervisors = get_supervisors(db, skip=skip, limit=limit)
-    return supervisors
+    return [
+        SupervisorResponse(
+            id=supervisor.id,
+            name=supervisor.name,
+            j3_list=[j3s.id for j3s in supervisor.j3list]
+        )
+        for supervisor in supervisors
+    ]
 
 @app.get("/api/supervisors/{supervisor_id}", response_model=SupervisorResponse)
 async def get_supervisors_endpoint(supervisor_id: int, db: Session = Depends(get_db)):
     supervisor = get_supervisor(db, supervisor_id=supervisor_id)
     if supervisor is None:
         raise HTTPException(status_code=404, detail="Supervisor not found")
-    return supervisor
+    return SupervisorResponse(id=supervisor.id, name=supervisor.name, j3_list=[j3s.id for j3s in supervisor.j3list])
 
 # Building endpoints
 @app.post("/api/buildings/", response_model=BuildingResponse)
