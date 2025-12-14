@@ -1,4 +1,41 @@
+"use client";
+
+import { useState } from "react"
+import type { Supervisor } from "@/lib/types"
+
+
 export default function addCustodian() {
+
+    const [janitor, setJanitor] = useState<Supervisor>({
+        name: "",
+        id: 0,
+    });
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("http://localhost:8000/api/supervisors/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(janitor),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to create supervisor");
+            }
+
+            const data = await response.json();
+            console.log("Created supervisor:", data);
+        } catch (error) {
+            console.error(error);
+        }
+        // console.log(janitor.name);
+        // console.log(janitor.id);
+    }
+
     return (
         <div className="bg-green-800 min-h-screen flex items-center justify-center">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-[40rem] md:h-screen lg:py-0">
@@ -7,24 +44,18 @@ export default function addCustodian() {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-green-800 md:text-2xl">
                             Add the Custodian's Credentials
                         </h1>
-                        <form className="space-y-4 md:space-y-6" action="#">
-                            <div className="flex space-x-4">
-                                <div>
-                                    <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-green-800">First Name</label>
-                                    <input type="text" name="firstname" id="firstname" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="First Name" required />
-                                </div>
-                                <div>
-                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-green-800">Last name</label>
-                                    <input type="text" name="lastname" id="lastname" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Last Name" required />
-                                </div>
+                        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+                            <div>
+                                <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-green-800">Full Name</label>
+                                <input type="text" name="firstname" id="firstname" value={janitor.name} onChange={(e) => setJanitor({ ...janitor, name: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Full Name" required />
                             </div>
                             <div>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-green-800">Email</label>
-                                <input type="text" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Email" />
+                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-green-800">ID Number</label>
+                                <input type="text" name="id" id="id" value={janitor.id || ""} onChange={(e) => setJanitor({ ...janitor, id: Number(e.target.value) })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="ID Number" />
                             </div>
                             <div>
-                                <label htmlFor="phone" className="block mb-2 text-sm font-medium text-green-800">Phone Number</label>
-                                <input type="text" name="phone" id="phone" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Phone number" />
+                                <label htmlFor="janitorrole" className="block mb-2 text-sm font-medium text-green-800">Janitor Role</label>
+                                <input type="text" name="janitorrole" id="janitorrole" value="Supervisor" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Janitor Role" readOnly />
                             </div>
                             <button type="submit" className="w-full text-white bg-green-800 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-progress disabled:bg-red-500">Add Custodian</button>
 
