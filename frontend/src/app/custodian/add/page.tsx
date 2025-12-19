@@ -2,17 +2,24 @@
 
 import { useState } from "react"
 import type { Supervisor } from "@/lib/types"
-
+import { useToast } from "@/app/components/Toast";
 
 export default function addCustodian() {
 
     const [janitor, setJanitor] = useState<Supervisor>({
-        name: "",
-        id: 0,
+        name: undefined,
+        id: undefined,
     });
+
+    const { showToast } = useToast()
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!janitor.name || !janitor.id) {
+            showToast("Please fill out required information", "fail");
+            return;
+        }
 
         try {
             const response = await fetch("http://localhost:8000/api/supervisors/", {
@@ -28,12 +35,12 @@ export default function addCustodian() {
             }
 
             const data = await response.json();
+            showToast("Custodian Added Successfully", "success");
             console.log("Created supervisor:", data);
         } catch (error) {
             console.error(error);
+            showToast("ID already exists", "fail");
         }
-        // console.log(janitor.name);
-        // console.log(janitor.id);
     }
 
     return (
@@ -47,7 +54,7 @@ export default function addCustodian() {
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                             <div>
                                 <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-green-800">Full Name</label>
-                                <input type="text" name="firstname" id="firstname" value={janitor.name} onChange={(e) => setJanitor({ ...janitor, name: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Full Name" required />
+                                <input type="text" name="firstname" id="firstname" value={janitor.name} onChange={(e) => setJanitor({ ...janitor, name: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Full Name" />
                             </div>
                             <div>
                                 <label htmlFor="id" className="block mb-2 text-sm font-medium text-green-800">ID Number</label>
