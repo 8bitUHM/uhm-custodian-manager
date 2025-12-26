@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react"
-import type { Supervisor } from "@/lib/types"
+import type { Supervisor } from "@/library/types"
 import { useToast } from "@/app/components/Toast";
 
 export default function addCustodian() {
