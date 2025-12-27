@@ -46,6 +46,19 @@ class J3(Base):
     supervisor_id = Column(Integer, ForeignKey("supervisors.id"))
     supervisor = relationship("Supervisor", back_populates="j3list")
 
+    # The Janitor 2's that the J3 is in charge of
+    j2list = relationship("J2", back_populates="j3")
+
+class J2(Base):
+    __tablename__ = "j2"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+
+    # thingies that help connect J2 and J3 together
+    j3_id = Column(Integer, ForeignKey("j3.id"))
+    j3 = relationship("J3", back_populates="j2list")
+
 class Building(Base):
     __tablename__ = "buildings"
 
