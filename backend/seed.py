@@ -6,9 +6,9 @@ def seed():
     db: Session = SessionLocal()
 
     # clears in case test data exists
+    db.query(J2).delete()
     db.query(J3).delete()
     db.query(Supervisor).delete()
-    db.query(J2).delete()
     db.commit()
 
     # creates the supervisors
