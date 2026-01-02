@@ -24,6 +24,33 @@ class CustodianResponse(CustodianBase):
     class Config:
         from_attributes = True
 
+# J3 schemas
+class J3Base(BaseModel):
+    id: int
+    name: str
+    supervisor_id: int
+
+class J3Create(J3Base):
+    pass
+
+class J3Response(J3Base):
+    class Config:
+        from_attributes = True
+
+# Supervisor schemas
+class SupervisorBase(BaseModel):
+    id: int
+    name: str
+
+class SupervisorCreate(SupervisorBase):
+    pass
+
+class SupervisorResponse(SupervisorBase):
+    j3_list: list[int] = []
+
+    class Config:
+        from_attributes = True
+
 # Building schemas
 class BuildingBase(BaseModel):
     name: str

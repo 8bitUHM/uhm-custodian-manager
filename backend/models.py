@@ -27,6 +27,25 @@ class Custodian(Base):
     # Relationships
     tasks = relationship("Task", back_populates="custodian")
 
+class Supervisor(Base):
+    __tablename__ = "supervisors"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+
+    # The Janitor 3's that the supervisor is in charge of
+    j3list = relationship("J3", back_populates="supervisor")
+
+class J3(Base):
+    __tablename__ = "j3"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+
+    # thingies that help connect J3 and supervisor together
+    supervisor_id = Column(Integer, ForeignKey("supervisors.id"))
+    supervisor = relationship("Supervisor", back_populates="j3list")
+
 class Building(Base):
     __tablename__ = "buildings"
 
