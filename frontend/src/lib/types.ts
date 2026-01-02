@@ -1,6 +1,6 @@
 type Supervisor = {
   id?: number;
-  name?: string;
+  name: string | null;
 };
 
 export type { Supervisor };
