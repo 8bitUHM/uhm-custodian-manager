@@ -5,6 +5,7 @@ import os
 
 # Database URL from environment variable
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://custodian_user:custodian_password@db:5432/custodian_db")
+# DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://custodian_user:custodian_password@localhost:5432/custodian_db")
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
