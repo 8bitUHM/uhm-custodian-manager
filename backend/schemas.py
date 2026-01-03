@@ -28,7 +28,7 @@ class CustodianResponse(CustodianBase):
 class J2Base(BaseModel):
     id: int
     name: str
-    j3_id: int
+    j3_name: str
 
 class J2Create(J2Base):
     pass
@@ -41,13 +41,13 @@ class J2Response(J2Base):
 class J3Base(BaseModel):
     id: int
     name: str
-    supervisor_id: int
+    supervisor_name: str
 
 class J3Create(J3Base):
     pass
 
 class J3Response(J3Base):
-    j2_list: list[int] = []
+    j2_list: list[str] = []
 
     class Config:
         from_attributes = True
@@ -61,7 +61,7 @@ class SupervisorCreate(SupervisorBase):
     pass
 
 class SupervisorResponse(SupervisorBase):
-    j3_list: list[int] = []
+    j3_list: list[str] = []
 
     class Config:
         from_attributes = True
