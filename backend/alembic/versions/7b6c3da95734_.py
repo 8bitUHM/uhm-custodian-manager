@@ -48,14 +48,15 @@ def upgrade() -> None:
         Column('updated_at', DateTime(timezone=True), onupdate=func.now())
     )
     op.create_table(
-        'j3',
+        'supervisors',
         Column('id', Integer, primary_key=True, index=True),
         Column('name', String(100), nullable=False)
     )
     op.create_table(
-        'supervisors',
-        Column('Id', Integer, primary_key=True, index=True),
-        Column('name', String(100), nullable=False)
+        'j3',
+        Column('id', Integer, primary_key=True, index=True),
+        Column('name', String(100), nullable=False),
+        Column('supervisor_id', ForeignKey('supervisors.id'))
     )
     op.create_table(
         'tasks',
