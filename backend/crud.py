@@ -1,7 +1,37 @@
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from models import Custodian, Building, Task, TaskStatus, Supervisor, J3
-from schemas import CustodianCreate, BuildingCreate, TaskCreate, SupervisorCreate, J3Create
+from models import Custodian, Building, Task, TaskStatus, Supervisor, J3, J2
+from schemas import CustodianCreate, BuildingCreate, TaskCreate, SupervisorCreate, J3Create, J2Create
+
+# J2
+def create_j2(db: Session, j2: J2Create):
+    db_j2 = J2(**j2.dict())
+    db.add(db_j2)
+    db.commit()
+    db.refresh(db_j2)
+    return db_j2
+
+def get_j2(db: Session, j2_id: int):
+    return db.query(J2).filter(J2.id == j2_id).first()
+
+def get_j2s(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(J2).offset(skip).limit(limit).all()
+
+def update_j2(db: Session, j2_id: int, j2_update: dict):
+    db_j2 = db.query(J2).filter(J2.id == j2_id).first()
+    if db_j2:
+        for key, value in j2_update.items():
+            setattr(db_j2, key, value)
+        db.commit()
+        db.refresh(db_j2)
+    return db_j2
+
+def delete_j2(db: Session, j2_id: int):
+    db_j2 = db.query(J2).filter(J2.id == j2_id).first()
+    if db_j2:
+        db.delete(db_j2)
+        db.commit()
+    return db_j2
 
 # J3
 def create_j3(db: Session, j3: J3Create):

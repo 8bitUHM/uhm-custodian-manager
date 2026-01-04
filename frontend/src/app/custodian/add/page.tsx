@@ -23,12 +23,12 @@ export default function addCustodian() {
         }
 
         try {
-            // const { data } = await axios.post(
-            //     "http://localhost:8000/api/supervisors/",
-            //     {
-            //         name: janitor.name,
-            //     },
-            // );
+            const { data } = await axios.post("http://localhost:8000/api/supervisors/",
+                {
+                    name: janitor.name,
+                    id: janitor.id
+                },
+            );
             console.log(janitor)
             showToast(`Successfully added ${janitor.name}`, 'success');
         } catch (error) {
