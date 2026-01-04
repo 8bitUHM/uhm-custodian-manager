@@ -26,7 +26,8 @@ target_metadata = Base.metadata
 from dotenv import load_dotenv
 from os import environ as env
 
-load_dotenv('/')
+load_dotenv('../.env')
+db = env.get('DATABASE_URL')
 config.set_main_option('sqlalchemy.url', env['DATABASE_URL'])
 
 def run_migrations_offline() -> None:
