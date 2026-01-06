@@ -5,13 +5,13 @@ import enum
 from database import Base
 
 class TaskStatus(str, enum.Enum):
-    pending = "pending"
-    in_progress = "in_progress"
-    completed = "completed"
-    cancelled = "cancelled"
+    pending = 'pending'
+    in_progress = 'in_progress'
+    completed = 'completed'
+    cancelled = 'cancelled'
 
 class Custodian(Base):
-    __tablename__ = "custodians"
+    __tablename__ = 'custodians'
 
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String(100), nullable=False)
@@ -25,29 +25,29 @@ class Custodian(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    tasks = relationship("Task", back_populates="custodian")
+    tasks = relationship('Task', back_populates='custodian')
 
 class Supervisor(Base):
-    __tablename__ = "supervisors"
+    __tablename__ = 'supervisors'
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
 
     # The Janitor 3's that the supervisor is in charge of
-    j3list = relationship("J3", back_populates="supervisor")
+    j3list = relationship('J3', back_populates='supervisor')
 
 class J3(Base):
-    __tablename__ = "j3"
+    __tablename__ = 'j3'
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
 
     # thingies that help connect J3 and supervisor together
-    supervisor_id = Column(Integer, ForeignKey("supervisors.id"))
-    supervisor = relationship("Supervisor", back_populates="j3list")
+    supervisor_id = Column(Integer, ForeignKey('supervisors.id', ondelete='SET NULL', onupdate='CASCADE'))
+    supervisor = relationship('Supervisor', back_populates='j3list')
 
 class Building(Base):
-    __tablename__ = "buildings"
+    __tablename__ = 'buildings'
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(200), nullable=False)
@@ -60,23 +60,23 @@ class Building(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    tasks = relationship("Task", back_populates="building")
+    tasks = relationship('Task', back_populates='building')
 
 class Task(Base):
-    __tablename__ = "tasks"
+    __tablename__ = 'tasks'
 
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(200), nullable=False)
     description = Column(Text)
     status = Column(Enum(TaskStatus), default=TaskStatus.pending)
-    priority = Column(String(20), default="medium")  # low, medium, high
-    assigned_to = Column(Integer, ForeignKey("custodians.id"))
-    building_id = Column(Integer, ForeignKey("buildings.id"))
+    priority = Column(String(20), default='medium')  # low, medium, high
+    assigned_to = Column(Integer, ForeignKey('custodians.id', onupdate='CASCADE', ondelete='SET NULL'), nullable=True) 
+    building_id = Column(Integer, ForeignKey('buildings.id', onupdate='CASCADE', ondelete='SET NULL'), nullable=True) 
     scheduled_date = Column(DateTime(timezone=True))
     completed_date = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    custodian = relationship("Custodian", back_populates="tasks")
-    building = relationship("Building", back_populates="tasks")
+    custodian = relationship('Custodian', back_populates='tasks')
+    building = relationship('Building', back_populates='tasks')
