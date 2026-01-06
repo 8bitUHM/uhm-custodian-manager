@@ -12,18 +12,40 @@ def seed():
     db: Session = SessionLocal()
 
     # clears in case test data exists
+    db.query
     db.query(J3).delete()
     db.query(Supervisor).delete()
+    db.query(Building).delete()
+    db.query(Custodian).delete()
+    db.query(Task).delete()
     db.commit()
 
     # creates the supervisors
-    super1 = Supervisor(id=1, name="Angel Asuncion")
-    super2 = Supervisor(id=2, name="Aaron Komori")
+    super1 = Supervisor(
+        id=1,
+        name="Angel Asuncion"
+    )
+    super2 = Supervisor(
+        id=2, 
+        name="Aaron Komori"
+    )
 
     # creates J3's
-    j3_1 = J3(id=101, name="Robert Yamashiro", supervisor=super1)
-    j3_2 = J3(id=102, name="Howard Kahue", supervisor=super1)
-    j3_3 = J3(id=103, name="Edward Abo", supervisor=super2)
+    j3_1 = J3(
+        id=101, 
+        name="Robert Yamashiro", 
+        supervisor=super1
+    )
+    j3_2 = J3(
+        id=102, 
+        name="Howard Kahue", 
+        supervisor=super1
+    )
+    j3_3 = J3(
+        id=103, 
+        name="Edward Abo", 
+        supervisor=super2
+    )
 
     # create custodians
     c_1 = Custodian(
@@ -86,8 +108,6 @@ def seed():
         title='fix urinal KUY',
         description="Students reported that the urinal at floor 3 (boy's restroom) is broken",
         priority='high',
-        assigned_to=113,
-        building_id=1,
         scheduled_date=date(2026,1,12)
     )
 
@@ -107,7 +127,6 @@ def seed():
         assigned_to=111,
         building_id=2,
         scheduled_date=date(2026,10,6)
-        
     )
 
     
@@ -129,4 +148,13 @@ def seed():
 
 
 if __name__ == "__main__":
-    seed()
+    try:
+        seed()
+    # DBAPI Reference: https://peps.python.org/pep-0249/#exceptions
+    # This types of errors and exception depends on the db and it's type (i.e postgres, sqlite)
+    except DataError:
+        # DataError refers to processed data issues i.e divide by 0 error or num is out of range
+        print('Data in field(s) do not match the type')
+    except ProgrammingError:
+        # ProgrammingError occurs when there is a bug in code i.e reference a table that doesn't exist
+        print('ProgrammingError occured')
