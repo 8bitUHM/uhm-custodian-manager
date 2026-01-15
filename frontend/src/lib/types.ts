@@ -2,7 +2,12 @@ type Custodian = {
   id?: number;
   name: string | null;
   role?: string;
-  boss_id?: number;
+  boss_name?: string | null;
 };
 
-export type { Custodian };
+type Supervisor = {
+  id: number;
+  name: string;
+};
+
+export type { Custodian, Supervisor };
