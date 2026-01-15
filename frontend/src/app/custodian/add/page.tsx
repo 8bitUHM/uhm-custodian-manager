@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react"
-import type { Custodian } from "@/lib/types"
+import { useState, useEffect } from "react"
+import type { Custodian, Supervisor } from "@/lib/types"
 import { useToast } from "@/app/components/Toast"
 import axios from "axios"
 
@@ -11,11 +11,41 @@ export default function addCustodian() {
         name: "",
         id: undefined,
         role: undefined,
-        boss_id: undefined
+        boss_name: undefined,
     });
-    const [showDropdown, setShowDropdown] = useState(false);
+    const [supervisors, setSupervisors] = useState<Supervisor[]>([]);
+    const [showRoleDropdown, setShowRoleDropdown] = useState(false);
+    const [showBossDropdown, setShowBossDropdown] = useState(false);
 
     const { showToast } = useToast()
+
+    useEffect(() => {
+        const bossOptions = async () => {
+            if (custodian.role !== "Janitor II" && custodian.role !== "Janitor III") {
+                setSupervisors([]);
+                return;
+            }
+
+            const endpoint = custodian.role === "Janitor III" ? "http://localhost:8000/api/supervisors/" : "http://localhost:8000/api/j3s/";
+
+            try {
+                const { data } = await axios.get<Supervisor[]>(endpoint);
+                setSupervisors(data);
+            } catch (error) {
+                console.error(error);
+                showToast("Failed to load supervisors", "fail");
+            }
+        };
+
+        bossOptions();
+    }, [custodian.role, showToast]);
+
+    useEffect(() => {
+        setCustodian((prev) => ({
+            ...prev,
+            boss_name: undefined,
+        }));
+    }, [custodian.role]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -84,21 +114,21 @@ export default function addCustodian() {
                             <div>
                                 <label htmlFor="role" className="block mb-2 text-sm font-medium text-green-800">Custodian Role</label>
                                 <div className="relative inline-block w-full">
-                                    <button type="button" onClick={() => setShowDropdown(!showDropdown)} className="text-white bg-green-900 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-left inline-flex justify-between items-center w-full">
+                                    <button type="button" onClick={() => setShowRoleDropdown(!showRoleDropdown)} className="text-white bg-green-900 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-left inline-flex justify-between items-center w-full">
                                         {custodian.role || "Select role"}
                                         <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
                                         </svg>
                                     </button>
 
-                                    {showDropdown && (
+                                    {showRoleDropdown && (
                                         <div className="absolute z-10 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
                                             <ul className="py-2 text-sm text-green-900">
                                                 {["Supervisor", "Janitor III", "Janitor II"].map((role) => (
                                                     <li key={role}>
                                                         <button type="button" onClick={() => {
                                                             setCustodian({ ...custodian, role });
-                                                            setShowDropdown(false);
+                                                            setShowRoleDropdown(false);
                                                         }}
                                                             className="w-full text-left px-4 py-2 hover:bg-gray-100"
                                                         >
@@ -112,9 +142,33 @@ export default function addCustodian() {
                                 </div>
                             </div>
                             {(custodian.role === "Janitor II" || custodian.role === "Janitor III") && (
-                                <div>
-                                    <label htmlFor="custodianboss" className="block mb-2 text-sm font-medium text-green-800">Custodian's Boss ID</label>
-                                    <input type="text" name="custodianboss" id="custodianboss" value={custodian.name || ""} onChange={(e) => setCustodian({ ...custodian, name: e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Full Name" />
+                                <div className="relative inline-block w-full">
+                                    <label htmlFor="custodianboss" className="block mb-2 text-sm font-medium text-green-800">{custodian.role === "Janitor III" ? "Supervisor's Name" : "J3's Name"}</label>
+                                    <button type="button" onClick={() => setShowBossDropdown(!showBossDropdown)} className="text-white bg-green-900 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-left inline-flex justify-between items-center w-full">
+                                        {custodian.boss_name || "Select name"}
+                                        <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                                        </svg>
+                                    </button>
+
+                                    {showBossDropdown && (
+                                        <div className="absolute z-10 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
+                                            <ul className="py-2 text-sm text-green-900">
+                                                {supervisors.map((supervisor) => (
+                                                    <li key={supervisor.id}>
+                                                        <button type="button" onClick={() => {
+                                                            setCustodian({ ...custodian, boss_name: supervisor.name });
+                                                            setShowBossDropdown(false);
+                                                        }}
+                                                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                                        >
+                                                            {supervisor.name}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             <button type="submit" className="w-full text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-progress disabled:bg-red-500 transition-colors duration-200">Add Custodian</button>
