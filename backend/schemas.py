@@ -24,6 +24,19 @@ class CustodianResponse(CustodianBase):
     class Config:
         from_attributes = True
 
+# J2 schemas
+class J2Base(BaseModel):
+    id: int
+    name: str
+    j3_id: int
+
+class J2Create(J2Base):
+    pass
+
+class J2Response(J2Base):
+    class Config:
+        from_attributes = True
+
 # J3 schemas
 class J3Base(BaseModel):
     id: int
@@ -34,6 +47,8 @@ class J3Create(J3Base):
     pass
 
 class J3Response(J3Base):
+    j2_list: list[int] = []
+
     class Config:
         from_attributes = True
 

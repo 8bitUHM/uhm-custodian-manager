@@ -6,13 +6,14 @@ import os
 
 from database import get_db, engine
 from models import Base
-from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse, J3Create, J3Response
+from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse, J3Create, J3Response, J2Create, J2Response
 from crud import (
     create_custodian, get_custodians, get_custodian,
     create_building, get_buildings, get_building,
     create_task, get_tasks, get_task,
     create_supervisor, get_supervisors, get_supervisor,
-    create_j3, get_j3s, get_j3
+    create_j3, get_j3s, get_j3,
+    create_j2, get_j2s, get_j2,
 )
 
 # Create database tables
@@ -75,6 +76,23 @@ async def get_custodian_endpoint(custodian_id: int, db: Session = Depends(get_db
     if custodian is None:
         raise HTTPException(status_code=404, detail="Custodian not found")
     return custodian
+
+# j2 endpoints
+@app.post("/api/j2s/", response_model=J2Response)
+async def create_j2_endpoint(j2: J2Create, db: Session = Depends(get_db)):
+    return create_j2(db=db, j2=j2)
+
+@app.get("/api/j2s/", response_model=List[J2Response])
+async def get_j2s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    j2s = get_j2s(db, skip=skip, limit=limit)
+    return j2s
+
+@app.get("/api/j2s/{j2_id}", response_model=J2Response)
+async def get_j2s_endpoint(j2_id: int, db: Session = Depends(get_db)):
+    j2 = get_j2(db, j2_id=j2_id)
+    if j2 is None:
+        raise HTTPException(status_code=404, detail="J2 not found")
+    return j2
 
 # j3 endpoints
 @app.post("/api/j3s/", response_model=J3Response)

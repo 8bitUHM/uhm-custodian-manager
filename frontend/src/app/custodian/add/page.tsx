@@ -60,45 +60,37 @@ export default function addCustodian() {
             return;
         }
 
+        let endpoint = "";
+        let custData: Record<string, any> = {
+            name: custodian.name,
+            id: custodian.id,
+        }
+
+        switch (custodian.role) {
+            case "Supervisor":
+                endpoint = "http://localhost:8000/api/supervisors/";
+                break;
+            case "Janitor III":
+                endpoint = "http://localhost:8000/api/j3s/";
+                custData.supervisor_id = custodian.boss_id;
+                break;
+            case "Janitor II":
+                endpoint = "http://localhost:8000/api/j2s/";
+                custData.j3_id = custodian.boss_id;
+                break;
+            default:
+                showToast("Invalid custodian role", "fail");
+                return;
+        }
+
         try {
-            const { data } = await axios.post(
-                "http://localhost:8000/api/j3s/",
-                {
-                    name: custodian.name,
-                    id: custodian.id,
-                    supervisor_id: custodian.boss_id
-                },
-            );
+            const { data } = await axios.post(endpoint, custData);
             console.log(custodian)
             showToast(`Successfully added ${custodian.name}`, 'success');
         } catch (error) {
             console.error(error);
             showToast(`${error}`, 'fail');
         }
-
-        // Use as reference when converting from fetch to axios
-        // 
-        //     try {
-        //         const response = await fetch("http://localhost:8000/api/supervisors/", {
-        //             method: "POST",
-        //             headers: {
-        //                 "Content-Type": "application/json",
-        //             },
-        //             body: JSON.stringify(custodian),
-        //         });
-
-        //         if (!response.ok) {
-        //             throw new Error("Failed to create supervisor");
-        //         }
-
-        //         const data = await response.json();
-        //         showToast("Custodian Added Successfully", "success");
-        //         console.log("Created supervisor:", data);
-        //     } catch (error) {
-        //         console.error(error);
-        //         showToast("ID already exists", "fail");
-        //     }
-        // }
     }
     return (
         <div className="bg-white min-h-screen flex items-center justify-center">
