@@ -3,6 +3,7 @@ type Custodian = {
   name: string | null;
   role?: string;
   boss_name?: string | null;
+  boss_id?: number;
 };
 
 type Supervisor = {

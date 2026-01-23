@@ -3,7 +3,7 @@ from typing import List, Optional
 from models import Custodian, Building, Task, TaskStatus, Supervisor, J3, J2
 from schemas import CustodianCreate, BuildingCreate, TaskCreate, SupervisorCreate, J3Create, J2Create
 
-# J2
+# J2 CRUD operations
 def create_j2(db: Session, j2: J2Create):
     db_j2 = J2(**j2.dict())
     db.add(db_j2)
@@ -33,7 +33,7 @@ def delete_j2(db: Session, j2_id: int):
         db.commit()
     return db_j2
 
-# J3
+# J3 CRUD operations
 def create_j3(db: Session, j3: J3Create):
     db_j3 = J3(**j3.dict())
     db.add(db_j3)
