@@ -46,9 +46,9 @@ async def health_check():
 @app.get("/api/dashboard/stats")
 async def get_dashboard_stats(db: Session = Depends(get_db)):
     from sqlalchemy import func
-    from models import Custodian, Building, Task
+    from models import Custodian, Building, Task, Supervisor, J3, J2
     
-    total_custodians = db.query(Custodian).count()
+    total_custodians = db.query(Supervisor).count() + db.query(J3).count() + db.query(J2).count()
     active_custodians = db.query(Custodian).filter(Custodian.is_active == True).count()
     total_buildings = db.query(Building).count()
     tasks_completed = db.query(Task).filter(Task.status == "completed").count()
