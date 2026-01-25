@@ -102,14 +102,22 @@ async def create_j3_endpoint(j3: J3Create, db: Session = Depends(get_db)):
 @app.get("/api/j3s/", response_model=List[J3Response])
 async def get_j3s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     j3s = get_j3s(db, skip=skip, limit=limit)
-    return j3s
+    return [
+        J3Response(
+            id=j3.id,
+            name=j3.name,
+            supervisor_id=j3.supervisor_id,
+            j2_list=[j2s.id for j2s in j3.j2list]
+        )
+        for j3 in j3s
+    ]
 
 @app.get("/api/j3s/{j3_id}", response_model=J3Response)
 async def get_j3s_endpoint(j3_id: int, db: Session = Depends(get_db)):
     j3 = get_j3(db, j3_id=j3_id)
     if j3 is None:
         raise HTTPException(status_code=404, detail="J3 not found")
-    return j3
+    return J3Response(id=j3.id, name=j3.name, supervisor_id=j3.supervisor_id, j2_list=[j2s.id for j2s in j3.j2list])
 
 # Supervisor endpoints
 @app.post("/api/supervisors/", response_model=SupervisorResponse)

@@ -49,14 +49,22 @@ export default function addCustodian() {
         }));
     }, [custodian.role]);
 
-    console.log(custodian.boss_name);
-    console.log(custodian.boss_id);
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!custodian.name || !custodian.id) {
+        if (!custodian.name || !custodian.id || !custodian.role) {
             showToast("Please fill out required information", "fail");
+            return;
+        }
+
+        if (custodian.role != "Supervisor" && !custodian.boss_id) {
+            showToast("Please fill out required information", "fail");
+            return;
+        }
+
+        // Test this when you have the time lol
+        if (custodian.id.toString().length > 10) {
+            showToast("ID must be 10 digits or fewer", "fail");
             return;
         }
 
@@ -79,7 +87,7 @@ export default function addCustodian() {
                 custData.j3_id = custodian.boss_id;
                 break;
             default:
-                showToast("Invalid custodian role", "fail");
+                showToast("Please select a role", "fail");
                 return;
         }
 
@@ -112,7 +120,7 @@ export default function addCustodian() {
                             <div>
                                 <label htmlFor="role" className="block mb-2 text-sm font-medium text-green-800">Custodian Role</label>
                                 <div className="relative inline-block w-full">
-                                    <button type="button" onClick={() => setShowRoleDropdown(!showRoleDropdown)} className="text-white bg-green-900 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-left inline-flex justify-between items-center w-full">
+                                    <button type="button" onClick={() => setShowRoleDropdown(!showRoleDropdown)} className="text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-left inline-flex justify-between items-center w-full">
                                         {custodian.role || "Select role"}
                                         <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -120,7 +128,7 @@ export default function addCustodian() {
                                     </button>
 
                                     {showRoleDropdown && (
-                                        <div className="absolute z-10 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
+                                        <div className="absolute z-20 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
                                             <ul className="py-2 text-sm text-green-900">
                                                 {["Supervisor", "Janitor III", "Janitor II"].map((role) => (
                                                     <li key={role}>
@@ -142,7 +150,7 @@ export default function addCustodian() {
                             {(custodian.role === "Janitor II" || custodian.role === "Janitor III") && (
                                 <div className="relative inline-block w-full">
                                     <label htmlFor="custodianboss" className="block mb-2 text-sm font-medium text-green-800">{custodian.role === "Janitor III" ? "Supervisor's Name" : "J3's Name"}</label>
-                                    <button type="button" onClick={() => setShowBossDropdown(!showBossDropdown)} className="text-white bg-green-900 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-left inline-flex justify-between items-center w-full">
+                                    <button type="button" onClick={() => setShowBossDropdown(!showBossDropdown)} className="text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-left inline-flex justify-between items-center w-full">
                                         {custodian.boss_name || "Select name"}
                                         <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
