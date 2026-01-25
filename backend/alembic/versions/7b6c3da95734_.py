@@ -56,7 +56,7 @@ def upgrade() -> None:
         'j3',
         Column('id', Integer, primary_key=True, index=True),
         Column('name', String(100), nullable=False),
-        Column('supervisor_id', ForeignKey('supervisors.id'))
+        Column('supervisor_id', Integer, ForeignKey('supervisors.id'))
     )
     op.create_table(
         'tasks',
