@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from typing import List
 import os
 
@@ -80,7 +81,14 @@ async def get_custodian_endpoint(custodian_id: int, db: Session = Depends(get_db
 # j2 endpoints
 @app.post("/api/j2s/", response_model=J2Response)
 async def create_j2_endpoint(j2: J2Create, db: Session = Depends(get_db)):
-    return create_j2(db=db, j2=j2)
+    try:
+        return create_j2(db=db, j2=j2)
+    # This is so the frontend can check if this specific error exists where the ID already exists in the database
+    except IntegrityError as error:
+        db.rollback()
+        if "unique constraint" in str(error.orig).lower():
+            raise HTTPException(status_code=400, detail="This ID already exists in the J2 database")
+        raise HTTPException(status_code=500, detail="Database error")
 
 @app.get("/api/j2s/", response_model=List[J2Response])
 async def get_j2s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -97,7 +105,14 @@ async def get_j2s_endpoint(j2_id: int, db: Session = Depends(get_db)):
 # j3 endpoints
 @app.post("/api/j3s/", response_model=J3Response)
 async def create_j3_endpoint(j3: J3Create, db: Session = Depends(get_db)):
-    return create_j3(db=db, j3=j3)
+    try:
+        return create_j3(db=db, j3=j3)
+    # This is so the frontend can check if this specific error exists where the ID already exists in the database
+    except IntegrityError as error:
+        db.rollback()
+        if "unique constraint" in str(error.orig).lower():
+            raise HTTPException(status_code=400, detail="This ID already exists in the J3 database")
+        raise HTTPException(status_code=500, detail="Database error")
 
 @app.get("/api/j3s/", response_model=List[J3Response])
 async def get_j3s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
@@ -122,7 +137,15 @@ async def get_j3s_endpoint(j3_id: int, db: Session = Depends(get_db)):
 # Supervisor endpoints
 @app.post("/api/supervisors/", response_model=SupervisorResponse)
 async def create_supervisor_endpoint(supervisor: SupervisorCreate, db: Session = Depends(get_db)):
-    return create_supervisor(db=db, supervisor=supervisor)
+    try:
+        return create_supervisor(db=db, supervisor=supervisor)
+    
+    # This is so the frontend can check if this specific error exists where the ID already exists in the database
+    except IntegrityError as error:
+        db.rollback()
+        if "unique constraint" in str(error.orig).lower():
+            raise HTTPException(status_code=400, detail="This ID already exists in the Supervisor database")
+        raise HTTPException(status_code=500, detail="Database error")
 
 @app.get("/api/supervisors/", response_model=List[SupervisorResponse])
 async def get_supervisors_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

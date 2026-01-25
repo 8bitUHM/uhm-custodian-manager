@@ -20,6 +20,7 @@ export default function addCustodian() {
 
     const { showToast } = useToast()
 
+    // Fetches either the supervisor's api or the j3's api to access their data depending on the custodian role chosen
     useEffect(() => {
         const bossOptions = async () => {
             if (custodian.role !== "Janitor II" && custodian.role !== "Janitor III") {
@@ -41,6 +42,7 @@ export default function addCustodian() {
         bossOptions();
     }, [custodian.role, showToast]);
 
+    // Resets the 2nd dropdown option
     useEffect(() => {
         setCustodian((prev) => ({
             ...prev,
@@ -49,20 +51,19 @@ export default function addCustodian() {
         }));
     }, [custodian.role]);
 
+    // Submits the frontend input onto the backend database
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        // Error case handling
         if (!custodian.name || !custodian.id || !custodian.role) {
             showToast("Please fill out required information", "fail");
             return;
         }
-
         if (custodian.role != "Supervisor" && !custodian.boss_id) {
             showToast("Please fill out required information", "fail");
             return;
         }
-
-        // Test this when you have the time lol
         if (custodian.id.toString().length > 10) {
             showToast("ID must be 10 digits or fewer", "fail");
             return;
@@ -74,6 +75,7 @@ export default function addCustodian() {
             id: custodian.id,
         }
 
+        // Chooses which api to fetch and send data to based on custodian.role
         switch (custodian.role) {
             case "Supervisor":
                 endpoint = "http://localhost:8000/api/supervisors/";
@@ -91,13 +93,21 @@ export default function addCustodian() {
                 return;
         }
 
+        // Submits the data
         try {
             const { data } = await axios.post(endpoint, custData);
             console.log(custodian)
             showToast(`Successfully added ${custodian.name}`, 'success');
         } catch (error) {
-            console.error(error);
-            showToast(`${error}`, 'fail');
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 400) {
+                    showToast("ID already exists", "fail");
+                } else {
+                    showToast("An unexpected error occurred", "fail");
+                }
+            } else {
+                showToast("An unexpected error occurred", "fail");
+            }
         }
     }
     return (
