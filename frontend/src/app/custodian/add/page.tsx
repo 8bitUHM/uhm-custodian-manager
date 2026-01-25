@@ -96,7 +96,6 @@ export default function addCustodian() {
         // Submits the data
         try {
             const { data } = await axios.post(endpoint, custData);
-            console.log(custodian)
             showToast(`Successfully added ${custodian.name}`, 'success');
         } catch (error) {
             if (axios.isAxiosError(error)) {
