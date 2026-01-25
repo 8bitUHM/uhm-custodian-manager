@@ -32,7 +32,11 @@ def seed():
     j2_8 = J2(id=222, name="Akira Sharp", j3=j3_4)
 
     # Adds all the data above into the database for testing
-    db.add_all([j3_1, j3_2, j3_3, j3_4, super1, super2, j2_1, j2_2, j2_3, j2_4, j2_5, j2_6, j2_7, j2_8])
+    db.add_all([
+        super1, super2,
+        j3_1, j3_2, j3_3, j3_4,
+        j2_1, j2_2, j2_3, j2_4, j2_5, j2_6, j2_7, j2_8
+    ])
     db.commit()
 
     db.close()
