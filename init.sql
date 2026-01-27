@@ -1,5 +1,4 @@
--- Initialize the custodian database
-CREATE DATABASE custodian_db;
+
 
 -- Create user if not exists
 DO $$
