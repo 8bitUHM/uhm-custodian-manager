@@ -11,4 +11,9 @@ type Supervisor = {
   name: string;
 };
 
-export type { Custodian, Supervisor };
+type nameHolder = {
+  firstName: string;
+  lastName: string;
+};
+
+export type { Custodian, Supervisor, nameHolder };

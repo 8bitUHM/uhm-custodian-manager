@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from models import Custodian, Building, Task, TaskStatus, Supervisor, J3, J2
-from schemas import CustodianCreate, BuildingCreate, TaskCreate, SupervisorCreate, J3Create, J2Create
+from models import Building, Task, TaskStatus, Supervisor, J3, J2
+from schemas import BuildingCreate, TaskCreate, SupervisorCreate, J3Create, J2Create
 
 # J2 CRUD operations
 def create_j2(db: Session, j2: J2Create):
@@ -93,36 +93,6 @@ def delete_supervisor(db: Session, supervisor_id: int):
         db.commit()
     return db_supervisor
 
-# Custodian CRUD operations
-def create_custodian(db: Session, custodian: CustodianCreate):
-    db_custodian = Custodian(**custodian.dict())
-    db.add(db_custodian)
-    db.commit()
-    db.refresh(db_custodian)
-    return db_custodian
-
-def get_custodian(db: Session, custodian_id: int):
-    return db.query(Custodian).filter(Custodian.id == custodian_id).first()
-
-def get_custodians(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(Custodian).offset(skip).limit(limit).all()
-
-def update_custodian(db: Session, custodian_id: int, custodian_update: dict):
-    db_custodian = db.query(Custodian).filter(Custodian.id == custodian_id).first()
-    if db_custodian:
-        for key, value in custodian_update.items():
-            setattr(db_custodian, key, value)
-        db.commit()
-        db.refresh(db_custodian)
-    return db_custodian
-
-def delete_custodian(db: Session, custodian_id: int):
-    db_custodian = db.query(Custodian).filter(Custodian.id == custodian_id).first()
-    if db_custodian:
-        db.delete(db_custodian)
-        db.commit()
-    return db_custodian
-
 # Building CRUD operations
 def create_building(db: Session, building: BuildingCreate):
     db_building = Building(**building.dict())
@@ -167,6 +137,7 @@ def get_task(db: Session, task_id: int):
 def get_tasks(db: Session, skip: int = 0, limit: int = 100):
     return db.query(Task).offset(skip).limit(limit).all()
 
+# will probably break because custodian model/schema is deleted
 def get_tasks_by_custodian(db: Session, custodian_id: int):
     return db.query(Task).filter(Task.assigned_to == custodian_id).all()
 

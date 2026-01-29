@@ -7,9 +7,8 @@ import os
 
 from database import get_db, engine
 from models import Base
-from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse, J3Create, J3Response, J2Create, J2Response
+from schemas import BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse, J3Create, J3Response, J2Create, J2Response
 from crud import (
-    create_custodian, get_custodians, get_custodian,
     create_building, get_buildings, get_building,
     create_task, get_tasks, get_task,
     create_supervisor, get_supervisors, get_supervisor,
@@ -47,10 +46,10 @@ async def health_check():
 @app.get("/api/dashboard/stats")
 async def get_dashboard_stats(db: Session = Depends(get_db)):
     from sqlalchemy import func
-    from models import Custodian, Building, Task, Supervisor, J3, J2
+    from models import Building, Task, Supervisor, J3, J2
     
     total_custodians = db.query(Supervisor).count() + db.query(J3).count() + db.query(J2).count()
-    active_custodians = db.query(Custodian).filter(Custodian.is_active == True).count()
+    active_custodians = db.query(Supervisor).count() + db.query(J3).count() + db.query(J2).count()
     total_buildings = db.query(Building).count()
     tasks_completed = db.query(Task).filter(Task.status == "completed").count()
     
@@ -60,23 +59,6 @@ async def get_dashboard_stats(db: Session = Depends(get_db)):
         "totalBuildings": total_buildings,
         "tasksCompleted": tasks_completed
     }
-
-# Custodian endpoints
-@app.post("/api/custodians/", response_model=CustodianResponse)
-async def create_custodian_endpoint(custodian: CustodianCreate, db: Session = Depends(get_db)):
-    return create_custodian(db=db, custodian=custodian)
-
-@app.get("/api/custodians/", response_model=List[CustodianResponse])
-async def get_custodians_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    custodians = get_custodians(db, skip=skip, limit=limit)
-    return custodians
-
-@app.get("/api/custodians/{custodian_id}", response_model=CustodianResponse)
-async def get_custodian_endpoint(custodian_id: int, db: Session = Depends(get_db)):
-    custodian = get_custodian(db, custodian_id=custodian_id)
-    if custodian is None:
-        raise HTTPException(status_code=404, detail="Custodian not found")
-    return custodian
 
 # j2 endpoints
 @app.post("/api/j2s/", response_model=J2Response)
