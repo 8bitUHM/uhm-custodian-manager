@@ -59,6 +59,12 @@ def upgrade() -> None:
         Column('supervisor_id', Integer, ForeignKey('supervisors.id'))
     )
     op.create_table(
+        'j2',
+        Column('id', Integer, primary_key=True, index=True),
+        Column('name', String(100), nullable=False),
+        Column('j3_id', Integer, ForeignKey('j3.id'))
+    )
+    op.create_table(
         'tasks',
         Column('id', Integer, primary_key=True,index=True),
         Column('title', String(200), nullable=False),
@@ -81,6 +87,7 @@ def downgrade() -> None:
     op.drop_table('buildings')
     op.drop_table('custodians')
     op.drop_table('j3')
+    op.drop_table('j2')
     op.drop_table('supervisors')
     op.drop_table('tasks')
     # ### end Alembic commands ###
