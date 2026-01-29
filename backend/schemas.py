@@ -3,27 +3,6 @@ from typing import Optional, List
 from datetime import datetime
 from models import TaskStatus
 
-# Custodian schemas
-class CustodianBase(BaseModel):
-    first_name: str
-    last_name: str
-    email: EmailStr
-    phone: Optional[str] = None
-    employee_id: Optional[str] = None
-    is_active: bool = True
-
-class CustodianCreate(CustodianBase):
-    pass
-
-class CustodianResponse(CustodianBase):
-    id: int
-    hire_date: datetime
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-
-    class Config:
-        from_attributes = True
-
 # J2 schemas
 class J2Base(BaseModel):
     id: int
