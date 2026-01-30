@@ -1,13 +1,28 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
 from models import TaskStatus
+import re
+
+NAME_REGEX = r"^[A-Za-z\s'-]+$"
+
+MIN_ID_NUM = 1_000_000
+MAX_ID_NUM = 99_999_999
 
 # J2 schemas
 class J2Base(BaseModel):
-    id: int
+    id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
     name: str
-    j3_id: int
+    j3_id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        if not re.match(NAME_REGEX, v):
+            raise ValueError(
+                "Name may only contain letters, spaces, and apostrophes"
+            )
+        return v
 
 class J2Create(J2Base):
     pass
@@ -18,9 +33,18 @@ class J2Response(J2Base):
 
 # J3 schemas
 class J3Base(BaseModel):
-    id: int
+    id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
     name: str
-    supervisor_id: int
+    supervisor_id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        if not re.match(NAME_REGEX, v):
+            raise ValueError(
+                "Name may only contain letters, spaces, and apostrophes"
+            )
+        return v
 
 class J3Create(J3Base):
     pass
@@ -33,8 +57,17 @@ class J3Response(J3Base):
 
 # Supervisor schemas
 class SupervisorBase(BaseModel):
-    id: int
+    id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
     name: str
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        if not re.match(NAME_REGEX, v):
+            raise ValueError(
+                "Name may only contain letters, spaces, and apostrophes"
+            )
+        return v
 
 class SupervisorCreate(SupervisorBase):
     pass

@@ -82,6 +82,8 @@ export default function addCustodian() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const NAME_REGEX = /^[A-Za-z\s'-]+$/;
+
         // If any of the inputs are empty, it is true. If its not empty, it is false
         const errorCheck = {
             firstName: !nameHolder.firstName,
@@ -102,14 +104,15 @@ export default function addCustodian() {
             return;
         }
 
-        if (custodian.id!.toString().length > 10) {
+        if (custodian.id!.toString().length > 8 || custodian.id!.toString().length < 7) {
             setErrors((prev) => ({
                 ...prev,
                 id: true,
             }));
-            showToast("ID must be 10 digits or fewer", "fail");
+            showToast("ID must be 7-8 digits", "fail");
             return;
         }
+
 
         let endpoint = "";
         let custData: Record<string, any> = {
@@ -148,7 +151,7 @@ export default function addCustodian() {
                     }));
                     showToast("ID already exists", "fail");
                 } else {
-                    showToast("An unexpected error occurred", "fail");
+                    showToast("An unexpected error occurred 123", "fail");
                 }
             } else {
                 showToast("An unexpected error occurred", "fail");
@@ -167,28 +170,47 @@ export default function addCustodian() {
                             <div className="flex gap-4">
                                 <div className="flex-1">
                                     <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-slate-800">First Name</label>
-                                    <input type="text" id="firstName" value={nameHolder.firstName} onChange={(e) => { setNameHolder({ ...nameHolder, firstName: e.target.value }); setErrors((prev) => ({ ...prev, firstName: false })); }} className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.firstName ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`} placeholder="First Name" />
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        value={nameHolder.firstName}
+                                        onChange={(e) => { setNameHolder({ ...nameHolder, firstName: e.target.value }); setErrors((prev) => ({ ...prev, firstName: false })); }}
+                                        className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.firstName ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`}
+                                        placeholder="First Name"
+                                    />
                                 </div>
 
                                 <div className="flex-1">
                                     <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-slate-800">Last Name</label>
-                                    <input type="text" id="lastname" value={nameHolder.lastName} onChange={(e) => { setNameHolder({ ...nameHolder, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }} className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.lastName ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`} placeholder="Last Name" />
+                                    <input
+                                        type="text"
+                                        id="lastname"
+                                        value={nameHolder.lastName} onChange={(e) => { setNameHolder({ ...nameHolder, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }}
+                                        className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.lastName ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`}
+                                        placeholder="Last Name"
+                                    />
                                 </div>
                             </div>
 
-                            {/* <div>
-                                <label htmlFor="name" className="block mb-2 text-sm font-medium text-slate-800">Full Name</label>
-                                <input type="text" name="name" id="name" value={custodian.name || ""} onChange={(e) => setCustodian({ ...custodian, name: e.target.value === "" ? null : e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Full Name" />
-                            </div> */}
-
                             <div>
-                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">ID Number</label>
-                                <input type="text" name="id" id="id" value={custodian.id || ""} onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }} className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.id ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`} placeholder="ID Number" />
+                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">UHM ID Number</label>
+                                <input
+                                    type="text"
+                                    name="id"
+                                    id="id" value={custodian.id || ""}
+                                    onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }}
+                                    className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.id ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`}
+                                    placeholder="UHM ID Number"
+                                />
                             </div>
                             <div>
                                 <label htmlFor="role" className="block mb-2 text-sm font-medium text-green-800">Custodian Role</label>
                                 <div className="relative inline-block w-full">
-                                    <button type="button" onClick={() => setShowRoleDropdown(!showRoleDropdown)} className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.role ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowRoleDropdown(!showRoleDropdown)}
+                                        className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.role ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}
+                                    >
                                         {custodian.role || "Select role"}
                                         <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -219,7 +241,11 @@ export default function addCustodian() {
                             {(custodian.role === "Janitor II" || custodian.role === "Janitor III") && (
                                 <div className="relative inline-block w-full">
                                     <label htmlFor="custodianboss" className="block mb-2 text-sm font-medium text-green-800">{custodian.role === "Janitor III" ? "Supervisor's Name" : "J3's Name"}</label>
-                                    <button type="button" onClick={() => setShowBossDropdown(!showBossDropdown)} className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.boss ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowBossDropdown(!showBossDropdown)}
+                                        className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.boss ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}
+                                    >
                                         {custodian.boss_name || "Select name"}
                                         <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
@@ -247,7 +273,12 @@ export default function addCustodian() {
                                     )}
                                 </div>
                             )}
-                            <button type="submit" className="w-full text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-progress disabled:bg-red-500 transition-colors duration-200">Add Custodian</button>
+                            <button
+                                type="submit"
+                                className="w-full text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-progress disabled:bg-red-500 transition-colors duration-200"
+                            >
+                                Add Custodian
+                            </button>
 
                             <a href="/" className="font-medium text-green-800 text-sm block pt-1 hover:underline">Back to home</a>
                         </form>
