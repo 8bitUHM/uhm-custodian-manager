@@ -31,7 +31,16 @@ export default function addCustodian() {
 
     const { showToast } = useToast()
 
+    // The line below helps make the first character of the name uppercase and everything else lowercase.
     const formatName = (name: string) => name.trim().toLowerCase().replace(/^\w/, (char) => char.toUpperCase());
+    const NAME_REGEX = /^[A-Za-z\s'-]+$/;
+
+    // Changes the classname of the input tag based on if they filled the information incorrectly
+    const inputClass = (errorCheck: boolean) =>
+        `bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errorCheck
+            ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+            : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"
+        }`;
 
     // Fetches either the supervisor's api or the j3's api to access their data depending on the custodian role chosen
     useEffect(() => {
@@ -55,8 +64,6 @@ export default function addCustodian() {
         bossOptions();
     }, [custodian.role, showToast]);
 
-    console.log(custodian.name);
-
     // Resets the 2nd dropdown option
     useEffect(() => {
         setCustodian((prev) => ({
@@ -66,6 +73,7 @@ export default function addCustodian() {
         }));
     }, [custodian.role]);
 
+    // Combines the first name and last name into one and assigns it to custodian.name
     useEffect(() => {
         const first = formatName(nameHolder.firstName);
         const last = formatName(nameHolder.lastName);
@@ -81,8 +89,6 @@ export default function addCustodian() {
     // Submits the frontend input onto the backend database
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        const NAME_REGEX = /^[A-Za-z\s'-]+$/;
 
         // If any of the inputs are empty, it is true. If its not empty, it is false
         const errorCheck = {
@@ -104,6 +110,7 @@ export default function addCustodian() {
             return;
         }
 
+        // If custodian.id is not 7-8 numbers
         if (custodian.id!.toString().length > 8 || custodian.id!.toString().length < 7) {
             setErrors((prev) => ({
                 ...prev,
@@ -113,6 +120,15 @@ export default function addCustodian() {
             return;
         }
 
+        if (!NAME_REGEX.test(custodian.name)) {
+            setErrors((prev) => ({
+                ...prev,
+                firstName: !NAME_REGEX.test(nameHolder.firstName),
+                lastName: !NAME_REGEX.test(nameHolder.lastName),
+            }));
+            showToast("First and Last names may only contain letters, spaces, apostrophes, and hyphens", "fail");
+            return;
+        }
 
         let endpoint = "";
         let custData: Record<string, any> = {
@@ -175,7 +191,7 @@ export default function addCustodian() {
                                         id="firstName"
                                         value={nameHolder.firstName}
                                         onChange={(e) => { setNameHolder({ ...nameHolder, firstName: e.target.value }); setErrors((prev) => ({ ...prev, firstName: false })); }}
-                                        className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.firstName ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`}
+                                        className={inputClass(errors.firstName)}
                                         placeholder="First Name"
                                     />
                                 </div>
@@ -186,7 +202,7 @@ export default function addCustodian() {
                                         type="text"
                                         id="lastname"
                                         value={nameHolder.lastName} onChange={(e) => { setNameHolder({ ...nameHolder, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }}
-                                        className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.lastName ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`}
+                                        className={inputClass(errors.lastName)}
                                         placeholder="Last Name"
                                     />
                                 </div>
@@ -199,7 +215,7 @@ export default function addCustodian() {
                                     name="id"
                                     id="id" value={custodian.id || ""}
                                     onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }}
-                                    className={`bg-gray-50 border text-gray-900 rounded-lg block w-full p-2.5 ${errors.id ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300 focus:ring-primary-600 focus:border-primary-600"}`}
+                                    className={inputClass(errors.id)}
                                     placeholder="UHM ID Number"
                                 />
                             </div>
