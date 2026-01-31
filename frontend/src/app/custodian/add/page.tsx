@@ -2,9 +2,8 @@
 
 import { useState } from "react"
 import type { Supervisor } from "@/lib/types"
-import { useToast } from "@/app/components/Toast"
-import axios from "axios"
-
+import { useToast } from "@/app/components/Toast";
+import axios from 'axios'
 export default function addCustodian() {
 
     const [janitor, setJanitor] = useState<Supervisor>({

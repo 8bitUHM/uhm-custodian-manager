@@ -43,7 +43,7 @@ class J3(Base):
     name = Column(String(100), nullable=False)
 
     # thingies that help connect J3 and supervisor together
-    supervisor_id = Column(Integer, ForeignKey('supervisors.id', ondelete='SET NULL', onupdate='CASCADE'))
+    supervisor_id = Column(Integer, ForeignKey('supervisors.id'))
     supervisor = relationship('Supervisor', back_populates='j3list')
 
 class Building(Base):
@@ -70,8 +70,8 @@ class Task(Base):
     description = Column(Text)
     status = Column(Enum(TaskStatus), default=TaskStatus.pending)
     priority = Column(String(20), default='medium')  # low, medium, high
-    assigned_to = Column(Integer, ForeignKey('custodians.id', onupdate='CASCADE', ondelete='SET NULL'), nullable=True) 
-    building_id = Column(Integer, ForeignKey('buildings.id', onupdate='CASCADE', ondelete='SET NULL'), nullable=True) 
+    assigned_to = Column(Integer, ForeignKey('custodians.id'), nullable=True) 
+    building_id = Column(Integer, ForeignKey('buildings.id'), nullable=True) 
     scheduled_date = Column(DateTime(timezone=True))
     completed_date = Column(DateTime(timezone=True))
     created_at = Column(DateTime(timezone=True), server_default=func.now())
