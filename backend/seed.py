@@ -12,12 +12,10 @@ def seed():
     db: Session = SessionLocal()
 
     # clears in case test data exists
-    db.query
     db.query(J3).delete()
     db.query(Supervisor).delete()
-    db.query(Building).delete()
-    db.query(Custodian).delete()
     db.query(Task).delete()
+    db.query(Building).delete()
     db.commit()
 
     # creates the supervisors
@@ -45,34 +43,6 @@ def seed():
         id=103, 
         name="Edward Abo", 
         supervisor=super2
-    )
-
-    # create custodians
-    c_1 = Custodian(
-        id=111,
-        first_name='Cris',
-        last_name='Wright',
-        email='cwright@hawaii.edu',
-        employee_id='j111',
-        hire_date= dt_1
-    )
-
-    c_2 = Custodian(
-        id=112,
-        first_name='Iwa',
-        last_name='Lani',
-        email='ilani@hawaii.edu',
-        employee_id='j112',
-        hire_date=dt_2
-    )
-
-    c_3 = Custodian(
-        id=113,
-        first_name='Robert',
-        last_name='Longekit',
-        email='rlongekit@hawaii.edu',
-        employee_id='j113',
-        hire_date=dt_3
     )
 
     # Create Building
@@ -133,9 +103,6 @@ def seed():
     print('Adding J3s and Supervisors')
     db.add_all([j3_1, j3_2, j3_3, super1, super2])
     
-    print('Adding Custodians')
-    db.add_all([c_1, c_2, c_3])
-
     print('Adding Buildings')
     db.add_all([bldg_1, bldg_2, bldg_3])
 
