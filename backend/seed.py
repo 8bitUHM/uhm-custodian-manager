@@ -12,9 +12,9 @@ def seed():
     db: Session = SessionLocal()
 
     # clears in case test data exists
+    db.query(Task).delete()
     db.query(J3).delete()
     db.query(Supervisor).delete()
-    db.query(Task).delete()
     db.query(Building).delete()
     db.commit()
 
