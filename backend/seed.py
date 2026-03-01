@@ -12,6 +12,7 @@ def seed():
     db: Session = SessionLocal()
 
     # clears in case test data exists
+    # Make sure to delete the models that are referenced in other tables first!
     db.query(Task).delete()
     db.query(J3).delete()
     db.query(Supervisor).delete()
