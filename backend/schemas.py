@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ValidationInfo, field_validator, model_validator
 from typing import Optional, List
 from datetime import datetime
 from models import TaskStatus
@@ -82,7 +82,35 @@ class TaskBase(BaseModel):
     scheduled_date: Optional[datetime] = None
 
 class TaskCreate(TaskBase):
-    pass
+
+    @field_validator('title', 'description', 'priority', mode='before', check_fields=False)
+    @classmethod
+    def clean_title(cls, value: str) -> str:
+        return value.strip()
+    
+    @field_validator('priority', mode='before', check_fields=False)
+    @classmethod
+    def format(cls, value: str) -> str:
+        return value.lower()
+    
+    @field_validator('title', mode='after', check_fields=False)
+    @classmethod
+    def title_not_empty(cls, info: ValidationInfo) -> str:
+        if (info.data['title'].__len__ == 0):
+            raise ValueError('Title must be defined!')
+        return info.data['title']
+    
+    @field_validator('scheduled_date', mode='after', check_fields=False)
+    @classmethod
+    def check_past_date(cls, info: ValidationInfo) -> str:
+        current_date = datetime.now()
+        if (info.data['scheduled_date'] < current_date):
+            raise ValueError('Date has already passed')
+        return info.data['scheduled_date']
+    
+    
+    
+    
 
 class TaskResponse(TaskBase):
     id: int
