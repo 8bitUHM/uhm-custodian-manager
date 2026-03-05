@@ -43,7 +43,7 @@ export default function addTask() {
                                         name="description" 
                                         id="description" 
                                         className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" 
-                                        placeholder="Description goes here..." 
+                                        placeholder="Example: Need cord for teacher's office" 
                                         rows={5}/>
                                 </div>
                             </div>
