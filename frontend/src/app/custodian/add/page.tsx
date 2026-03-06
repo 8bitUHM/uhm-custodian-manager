@@ -209,15 +209,12 @@ export default function addCustodian() {
                             </div>
 
                             <div>
-                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">UHM ID Number</label>
-                                <input
-                                    type="text"
-                                    name="id"
-                                    id="id" value={custodian.id || ""}
-                                    onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }}
-                                    className={inputClass(errors.id)}
-                                    placeholder="UHM ID Number"
-                                />
+                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">ID Number</label>
+                                <input type="text" name="id" id="id" value={custodian.id || ""} onChange={(e) => setCustodian({ ...custodian, id: Number(e.target.value) })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="ID Number" />
+                            </div>
+                            <div>
+                                <label htmlFor="fullname" className="block mb-2 text-sm font-medium text-slate-800">Full Name</label>
+                                <input type="text" name="fullname" id="fullname" value={custodian.name || ""} onChange={(e) => setCustodian({ ...custodian, name: e.target.value === "" ? null : e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Full Name" />
                             </div>
                             <div>
                                 <label htmlFor="role" className="block mb-2 text-sm font-medium text-green-800">Custodian Role</label>
