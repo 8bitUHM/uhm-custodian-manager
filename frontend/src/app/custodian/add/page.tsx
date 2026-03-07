@@ -8,20 +8,14 @@ import axios from "axios"
 export default function addCustodian() {
 
     const [custodian, setCustodian] = useState<Custodian>({
-        name: "",
+        firstName: "",
+        lastName: "",
         id: undefined,
         role: undefined,
         boss_name: undefined,
         boss_id: undefined
     });
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-
-    // const [nameHolder, setNameHolder] = useState<nameHolder>({
-    //     firstName: "",
-    //     lastName: ""
-    // })
     const [errors, setErrors] = useState({
         firstName: false,
         lastName: false,
@@ -77,27 +71,14 @@ export default function addCustodian() {
         }));
     }, [custodian.role]);
 
-    // Combines the first name and last name into one and assigns it to custodian.name
-    // useEffect(() => {
-    //     const first = formatName(nameHolder.firstName);
-    //     const last = formatName(nameHolder.lastName);
-
-    //     const fullName = first && last ? `${first} ${last}` : first || last || "";
-
-    //     setCustodian((prev) => ({
-    //         ...prev,
-    //         name: fullName || null,
-    //     }));
-    // }, [nameHolder.firstName, nameHolder.lastName]);
-
     // Submits the frontend input onto the backend database
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // If any of the inputs are empty, it is true. If its not empty, it is false
         const errorCheck = {
-            firstName: !firstName,
-            lastName: !lastName,
+            firstName: !custodian.firstName,
+            lastName: !custodian.lastName,
             id: !custodian.id,
             role: !custodian.role,
 
@@ -124,13 +105,12 @@ export default function addCustodian() {
             return;
         }
 
-
-        // change this to firstname and lastname. This throws an error no matter what because custodian.name has no value
-        if (!NAME_REGEX.test(firstName) || !NAME_REGEX.test(lastName)) {
+        // If first or last name has any numbers or special characters in it (excluding - and ')
+        if (!NAME_REGEX.test(custodian.firstName) || !NAME_REGEX.test(custodian.lastName)) {
             setErrors((prev) => ({
                 ...prev,
-                firstName: !NAME_REGEX.test(firstName),
-                lastName: !NAME_REGEX.test(lastName),
+                firstName: !NAME_REGEX.test(custodian.firstName),
+                lastName: !NAME_REGEX.test(custodian.lastName),
             }));
             showToast("First and Last names may only contain letters, spaces, apostrophes, and hyphens", "fail");
             return;
@@ -138,7 +118,7 @@ export default function addCustodian() {
 
         let endpoint = "";
         let custData: Record<string, any> = {
-            name: `${formatName(firstName)} ${formatName(lastName)}`.trim(),
+            name: `${formatName(custodian.firstName)} ${formatName(custodian.lastName)}`.trim(),
             id: custodian.id,
         }
 
@@ -195,8 +175,8 @@ export default function addCustodian() {
                                     <input
                                         type="text"
                                         id="firstName"
-                                        value={firstName}
-                                        onChange={(e) => { setFirstName(e.target.value); setErrors((prev) => ({ ...prev, firstName: false })); }}
+                                        value={custodian.firstName}
+                                        onChange={(e) => { setCustodian({ ...custodian, firstName: e.target.value }); setErrors((prev) => ({ ...prev, firstName: false })); }}
                                         className={inputClass(errors.firstName)}
                                         placeholder="First Name"
                                     />
@@ -207,8 +187,8 @@ export default function addCustodian() {
                                     <input
                                         type="text"
                                         id="lastname"
-                                        value={lastName}
-                                        onChange={(e) => { setLastName(e.target.value); setErrors((prev) => ({ ...prev, lastName: false })); }}
+                                        value={custodian.lastName}
+                                        onChange={(e) => { setCustodian({ ...custodian, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }}
                                         className={inputClass(errors.lastName)}
                                         placeholder="Last Name"
                                     />
@@ -216,21 +196,8 @@ export default function addCustodian() {
                             </div>
 
                             <div>
-                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">UHM ID Number</label>
-                                <input
-                                    type="text"
-                                    name="id"
-                                    id="id" value={custodian.id || ""}
-                                    onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }}
-                                    className={inputClass(errors.id)}
-                                    placeholder="UHM ID Number"
-                                />
-                                {/* <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">ID Number</label>
-                                <input type="text" name="id" id="id" value={custodian.id || ""} onChange={(e) => setCustodian({ ...custodian, id: Number(e.target.value) })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="ID Number" />
-                            </div>
-                            <div>
-                                <label htmlFor="fullname" className="block mb-2 text-sm font-medium text-slate-800">Full Name</label>
-                                <input type="text" name="fullname" id="fullname" value={custodian.name || ""} onChange={(e) => setCustodian({ ...custodian, name: e.target.value === "" ? null : e.target.value })} className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Full Name" /> */}
+                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">ID Number</label>
+                                <input type="text" name="id" id="id" value={custodian.id || ""} onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }} className={inputClass(errors.id)} placeholder="ID Number" />
                             </div>
                             <div>
                                 <label htmlFor="role" className="block mb-2 text-sm font-medium text-green-800">Custodian Role</label>
