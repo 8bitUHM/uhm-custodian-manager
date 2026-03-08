@@ -16,10 +16,10 @@ type Task = {
   description: string;
   status: TaskStatus;
   priority: "low" | "medium" | "high";
-  assigned_to: number;
+  assigned_to?: number;
   building_id: number;
   scheduled_date: Date;
-  completed_date: Date;
+  completed_date?: Date;
   created_at: Date;
   updated_at: Date;
 }
