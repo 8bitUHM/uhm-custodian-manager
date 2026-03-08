@@ -86,7 +86,7 @@ def seed():
         id=2,
         title='clean spill in Campus Center',
         priority='low',
-        assigned_to=112,
+        assigned_to=101,
         building_id=3,
         scheduled_date=date(2026, 4, 5)
     )
@@ -95,7 +95,7 @@ def seed():
         id=3,
         title='deliver cables to POST 314',
         description='ICS department is asking if we can deliver cables to 314 before the first class starts',
-        assigned_to=111,
+        assigned_to=102,
         building_id=2,
         scheduled_date=date(2026,10,6)
     )
