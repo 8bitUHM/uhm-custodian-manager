@@ -70,7 +70,7 @@ class Task(Base):
     description = Column(Text)
     status = Column(Enum(TaskStatus), default=TaskStatus.pending)
     priority = Column(String(20), default='medium')  # low, medium, high
-    assigned_to = Column(Integer, ForeignKey('custodians.id'), nullable=True) 
+    assigned_to = Column(Integer, ForeignKey('j3.id'), nullable=True) 
     building_id = Column(Integer, ForeignKey('buildings.id'), nullable=True) 
     scheduled_date = Column(DateTime(timezone=True))
     completed_date = Column(DateTime(timezone=True))
@@ -78,5 +78,5 @@ class Task(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    custodian = relationship('Custodian', back_populates='tasks')
+    j3 = relationship('J3', back_populates='tasks')
     building = relationship('Building', back_populates='tasks')
