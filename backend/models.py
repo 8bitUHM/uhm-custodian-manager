@@ -25,7 +25,7 @@ class Custodian(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    tasks = relationship('Task', back_populates='custodian')
+    # tasks = relationship('Task', back_populates='custodian')
 
 class Supervisor(Base):
     __tablename__ = 'supervisors'
@@ -45,6 +45,8 @@ class J3(Base):
     # thingies that help connect J3 and supervisor together
     supervisor_id = Column(Integer, ForeignKey('supervisors.id'))
     supervisor = relationship('Supervisor', back_populates='j3list')
+    # Change: Delete and add to J2 when J2 is created
+    tasks = relationship('Task', back_populates='j3')
 
 class Building(Base):
     __tablename__ = 'buildings'
@@ -78,5 +80,6 @@ class Task(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
+    # Change: J3 to J2
     j3 = relationship('J3', back_populates='tasks')
     building = relationship('Building', back_populates='tasks')
