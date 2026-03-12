@@ -18,6 +18,11 @@ class J2Base(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_name(cls, v: str) -> str:
+        v = v.strip()
+
+        if not v:
+            raise ValueError("Name cannot be empty")
+
         if not re.match(NAME_REGEX, v):
             raise ValueError(
                 "Name may only contain letters, spaces, and apostrophes"
@@ -40,6 +45,11 @@ class J3Base(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_name(cls, v: str) -> str:
+        v = v.strip()
+
+        if not v:
+            raise ValueError("Name cannot be empty")
+
         if not re.match(NAME_REGEX, v):
             raise ValueError(
                 "Name may only contain letters, spaces, and apostrophes"
@@ -63,6 +73,11 @@ class SupervisorBase(BaseModel):
     @field_validator("name")
     @classmethod
     def validate_name(cls, v: str) -> str:
+        v = v.strip()
+
+        if not v:
+            raise ValueError("Name cannot be empty")
+
         if not re.match(NAME_REGEX, v):
             raise ValueError(
                 "Name may only contain letters, spaces, and apostrophes"
