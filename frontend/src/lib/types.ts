@@ -2,6 +2,7 @@ type Custodian = {
   id?: number;
   firstName: string;
   lastName: string;
+  suffix: string;
   role?: string;
   boss_name?: string | null;
   boss_id?: number;
