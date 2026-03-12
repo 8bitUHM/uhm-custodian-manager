@@ -10,6 +10,7 @@ export default function addCustodian() {
     const [custodian, setCustodian] = useState<Custodian>({
         firstName: "",
         lastName: "",
+        suffix: "",
         id: undefined,
         role: undefined,
         boss_name: undefined,
@@ -28,6 +29,8 @@ export default function addCustodian() {
     const [showBossDropdown, setShowBossDropdown] = useState(false);
 
     const { showToast } = useToast()
+
+    const suffixes = ["", "Jr.", "Sr.", "II", "III", "IV"];
 
     // The line below helps make the first character of the name uppercase and everything else lowercase.
     const formatName = (name: string) => name.trim().toLowerCase().replace(/^\w/, (char) => char.toUpperCase());
@@ -118,7 +121,7 @@ export default function addCustodian() {
 
         let endpoint = "";
         let custData: Record<string, any> = {
-            name: `${formatName(custodian.firstName)} ${formatName(custodian.lastName)}`.trim(),
+            name: `${formatName(custodian.firstName)} ${formatName(custodian.lastName)} ${custodian.suffix}`.trim(),
             id: custodian.id,
         }
 
@@ -170,7 +173,7 @@ export default function addCustodian() {
                         </h1>
                         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
                             <div className="flex gap-4">
-                                <div className="flex-1">
+                                <div className="flex-[2]">
                                     <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-slate-800">First Name</label>
                                     <input
                                         type="text"
@@ -182,7 +185,7 @@ export default function addCustodian() {
                                     />
                                 </div>
 
-                                <div className="flex-1">
+                                <div className="flex-[2]">
                                     <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-slate-800">Last Name</label>
                                     <input
                                         type="text"
@@ -192,6 +195,24 @@ export default function addCustodian() {
                                         className={inputClass(errors.lastName)}
                                         placeholder="Last Name"
                                     />
+                                </div>
+
+                                <div className="flex-[1.5]">
+                                    <label htmlFor="suffix" className="block mb-2 text-sm font-medium text-slate-800">Suffix</label>
+                                    <select
+                                        id="suffix"
+                                        value={custodian.suffix}
+                                        onChange={(e) => {
+                                            setCustodian({ ...custodian, suffix: e.target.value });
+                                        }}
+                                        className={inputClass(false)}
+                                    >
+                                        {suffixes.map((suffix) => (
+                                            <option key={suffix} value={suffix}>
+                                                {suffix === "" ? "None" : suffix}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             </div>
 
