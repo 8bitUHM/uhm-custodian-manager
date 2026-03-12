@@ -156,7 +156,7 @@ export default function addCustodian() {
                     }));
                     showToast("ID already exists", "fail");
                 } else {
-                    showToast("An unexpected error occurred 123", "fail");
+                    showToast("An unexpected error occurred", "fail");
                 }
             } else {
                 showToast("An unexpected error occurred", "fail");
