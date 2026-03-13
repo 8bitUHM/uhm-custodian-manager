@@ -30,7 +30,7 @@ export default function addCustodian() {
 
     const { showToast } = useToast()
 
-    const suffixes = ["", "Jr.", "Sr.", "II", "III", "IV"];
+    const suffixes = ["", "Jr", "Sr", "II", "III", "IV"];
 
     // The line below helps make the first character of the name uppercase and everything else lowercase.
     const formatName = (name: string) => name.trim().toLowerCase().replace(/^\w/, (char) => char.toUpperCase());
@@ -165,143 +165,275 @@ export default function addCustodian() {
     }
     return (
         <div className="bg-white min-h-screen flex items-center justify-center">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-[40rem] md:h-screen lg:py-0">
-                <div className="w-full outline-1  outline-slate-300 outline rounded-lg shadow-xl md:mt-0 sm:max-w-md xl:p-0">
-                    <div className="p-8 space-y-4 md:space-y-6 sm:p-8">
-                        <h1 className="text-xl font-bold leading-tight tracking-tight text-slate-800 md:text-2xl">
+            <div className="flex items-center justify-center w-full">
+                <div className="mx-auto">
+                    <div className="p-8">
+                        <h1 className="text-xl font-bold leading-loose tracking-tight text-slate-800">
                             Add Custodian
                         </h1>
-                        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-                            <div className="flex gap-4">
-                                <div className="flex-[2]">
-                                    <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-slate-800">First Name</label>
-                                    <input
-                                        type="text"
-                                        id="firstName"
-                                        value={custodian.firstName}
-                                        onChange={(e) => { setCustodian({ ...custodian, firstName: e.target.value }); setErrors((prev) => ({ ...prev, firstName: false })); }}
-                                        className={inputClass(errors.firstName)}
-                                        placeholder="First Name"
-                                    />
+                        <form className="flex flex-col min-h-full gap-4" onSubmit={handleSubmit}>
+                            <div className="flex flex-col gap-4">
+                                <div className="inline-flex flex-row justify-between gap-3 lg:items-stretch lg:w-[50rem] lg:gap-0">
+                                    <div className="basis-[18rem]">
+                                        <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-slate-800">First Name</label>
+                                        <input type="text" name="firstname" value={custodian.firstName} id="firstname" onChange={(e) => { setCustodian({ ...custodian, firstName: e.target.value }); setErrors((prev) => ({ ...prev, firstName: false })); }} className={inputClass(errors.firstName)} placeholder="First Name" />
+                                    </div>
+                                    <div className="basis-[18rem]">
+                                        <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-slate-800">Last Name</label>
+                                        <input type="text" name="lastname" value={custodian.lastName} id="lastname" onChange={(e) => { setCustodian({ ...custodian, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }} className={inputClass(errors.lastName)} placeholder="Last Name" />
+                                    </div>
+                                    <div className="basis-[7rem]">
+                                        <label htmlFor="suffix" className="block mb-2 text-sm font-medium text-slate-800">Suffix</label>
+                                        <select
+                                            id="suffix"
+                                            value={custodian.suffix}
+                                            onChange={(e) => {
+                                                setCustodian({ ...custodian, suffix: e.target.value });
+                                            }}
+                                            className={inputClass(false)}
+                                        >
+                                            {suffixes.map((suffix) => (
+                                                <option key={suffix} value={suffix}>
+                                                    {suffix === "" ? "None" : suffix}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
                                 </div>
+                                <div className="inline-flex flex-row justify-between gap-3 lg:items-stretch lg:w-[50rem] lg:gap-0">
+                                    <div className="basis-[22rem]">
+                                        <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">ID Number</label>
+                                        <input
+                                            type="text"
+                                            name="id"
+                                            id="id"
+                                            value={custodian.id || ""}
+                                            onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }}
+                                            className={inputClass(errors.id)}
+                                            placeholder="ID Number"
+                                        />
+                                    </div>
 
-                                <div className="flex-[2]">
-                                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-slate-800">Last Name</label>
-                                    <input
-                                        type="text"
-                                        id="lastname"
-                                        value={custodian.lastName}
-                                        onChange={(e) => { setCustodian({ ...custodian, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }}
-                                        className={inputClass(errors.lastName)}
-                                        placeholder="Last Name"
-                                    />
-                                </div>
+                                    <div className="basis-[22rem] relative">
+                                        <label htmlFor="role" className="block mb-2 text-sm font-medium text-slate-800">Custodian Role</label>
 
-                                <div className="flex-[1.5]">
-                                    <label htmlFor="suffix" className="block mb-2 text-sm font-medium text-slate-800">Suffix</label>
-                                    <select
-                                        id="suffix"
-                                        value={custodian.suffix}
-                                        onChange={(e) => {
-                                            setCustodian({ ...custodian, suffix: e.target.value });
-                                        }}
-                                        className={inputClass(false)}
-                                    >
-                                        {suffixes.map((suffix) => (
-                                            <option key={suffix} value={suffix}>
-                                                {suffix === "" ? "None" : suffix}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowRoleDropdown(!showRoleDropdown)}
+                                            className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.role ? "ring-2 ring-red-500 bg-green-600" : "bg-green-600 hover:bg-green-700"} `}
+                                        >
+                                            {custodian.role || "Select role"}
+                                            <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                                            </svg>
+                                        </button>
 
-                            <div>
-                                <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">ID Number</label>
-                                <input type="text" name="id" id="id" value={custodian.id || ""} onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }} className={inputClass(errors.id)} placeholder="ID Number" />
-                            </div>
-                            <div>
-                                <label htmlFor="role" className="block mb-2 text-sm font-medium text-green-800">Custodian Role</label>
-                                <div className="relative inline-block w-full">
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowRoleDropdown(!showRoleDropdown)}
-                                        className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.role ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}
-                                    >
-                                        {custodian.role || "Select role"}
-                                        <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-                                        </svg>
-                                    </button>
-
-                                    {showRoleDropdown && (
-                                        <div className="absolute z-20 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
-                                            <ul className="py-2 text-sm text-green-900">
-                                                {["Supervisor", "Janitor III", "Janitor II"].map((role) => (
-                                                    <li key={role}>
-                                                        <button type="button" onClick={() => {
-                                                            setCustodian({ ...custodian, role });
-                                                            setErrors((prev) => ({ ...prev, role: false }));
-                                                            setShowRoleDropdown(false);
-                                                        }}
-                                                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                                                        >
-                                                            {role}
-                                                        </button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
+                                        {showRoleDropdown && (
+                                            <div className="absolute left-0 z-20 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
+                                                <ul className="py-2 text-sm text-slate-900">
+                                                    {["Supervisor", "Janitor III", "Janitor II"].map((role) => (
+                                                        <li key={role}>
+                                                            <button type="button" onClick={() => {
+                                                                setCustodian({ ...custodian, role });
+                                                                setErrors((prev) => ({ ...prev, role: false }));
+                                                                setShowRoleDropdown(false);
+                                                            }}
+                                                                className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                                            >
+                                                                {role}
+                                                            </button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             {(custodian.role === "Janitor II" || custodian.role === "Janitor III") && (
-                                <div className="relative inline-block w-full">
-                                    <label htmlFor="custodianboss" className="block mb-2 text-sm font-medium text-green-800">{custodian.role === "Janitor III" ? "Supervisor's Name" : "J3's Name"}</label>
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowBossDropdown(!showBossDropdown)}
-                                        className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.boss ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}
-                                    >
-                                        {custodian.boss_name || "Select name"}
-                                        <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
-                                        </svg>
-                                    </button>
+                                <div className="inline-flex flex-row justify-between gap-3 lg:items-stretch lg:w-[50rem] lg:gap-0">
+                                    <div className="basis-[50rem] relative">
+                                        <label htmlFor="custodianboss" className="block mb-2 text-sm font-medium text-slate-800">{custodian.role === "Janitor III" ? "Supervisor's Name" : "J3's Name"}</label>
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowBossDropdown(!showBossDropdown)}
+                                            className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.boss ? "ring-2 ring-red-500 bg-green-600" : "bg-green-600 hover:bg-green-700"} `}
+                                        >
+                                            {custodian.boss_name || "Select name"}
+                                            <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+                                            </svg>
+                                        </button>
 
-                                    {showBossDropdown && (
-                                        <div className="absolute z-10 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
-                                            <ul className="py-2 text-sm text-green-900 max-h-56 overflow-y-auto">
-                                                {supervisors.map((supervisor) => (
-                                                    <li key={supervisor.id}>
-                                                        <button type="button" onClick={() => {
-                                                            setCustodian({ ...custodian, boss_name: supervisor.name, boss_id: supervisor.id });
-                                                            setErrors((prev) => ({ ...prev, boss: false }));
-                                                            setShowBossDropdown(false);
-                                                        }}
-                                                            className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                                                        >
-                                                            {supervisor.name}
-                                                        </button>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    )}
+                                        {showBossDropdown && (
+                                            <div className="absolute left-0 z-10 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
+                                                <ul className="py-2 text-sm text-slate-900 max-h-56 overflow-y-auto">
+                                                    {supervisors.map((supervisor) => (
+                                                        <li key={supervisor.id}>
+                                                            <button type="button" onClick={() => {
+                                                                setCustodian({ ...custodian, boss_name: supervisor.name, boss_id: supervisor.id });
+                                                                setErrors((prev) => ({ ...prev, boss: false }));
+                                                                setShowBossDropdown(false);
+                                                            }}
+                                                                className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                                            >
+                                                                {supervisor.name}
+                                                            </button>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             )}
-                            <button
-                                type="submit"
-                                className="w-full text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-progress disabled:bg-red-500 transition-colors duration-200"
-                            >
-                                Add Custodian
-                            </button>
+                            <button type="submit" className="w-[10rem] text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-progress disabled:bg-red-500 transition-colors duration-200">Add Custodian</button>
 
-                            <a href="/" className="font-medium text-green-800 text-sm block pt-1 hover:underline">Back to home</a>
+                            <a href="/" className="font-medium text-black text-sm block pt-1 hover:underline">Back to home</a>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
+        // <div className="bg-white min-h-screen flex items-center justify-center">
+        //     <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto w-[40rem] md:h-screen lg:py-0">
+        //         <div className="w-full outline-1  outline-slate-300 outline rounded-lg shadow-xl md:mt-0 sm:max-w-md xl:p-0">
+        //             <div className="p-8 space-y-4 md:space-y-6 sm:p-8">
+        //                 <h1 className="text-xl font-bold leading-tight tracking-tight text-slate-800 md:text-2xl">
+        //                     Add Custodian
+        //                 </h1>
+        //                 <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+        //                     <div className="flex gap-4">
+        //                         <div className="flex-[2]">
+        //                             <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-slate-800">First Name</label>
+        //                             <input
+        //                                 type="text"
+        //                                 id="firstName"
+        //                                 value={custodian.firstName}
+        //                                 onChange={(e) => { setCustodian({ ...custodian, firstName: e.target.value }); setErrors((prev) => ({ ...prev, firstName: false })); }}
+        //                                 className={inputClass(errors.firstName)}
+        //                                 placeholder="First Name"
+        //                             />
+        //                         </div>
+
+        //                         <div className="flex-[2]">
+        //                             <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-slate-800">Last Name</label>
+        //                             <input
+        //                                 type="text"
+        //                                 id="lastname"
+        //                                 value={custodian.lastName}
+        //                                 onChange={(e) => { setCustodian({ ...custodian, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }}
+        //                                 className={inputClass(errors.lastName)}
+        //                                 placeholder="Last Name"
+        //                             />
+        //                         </div>
+
+        //                         <div className="flex-[1.5]">
+        //                             <label htmlFor="suffix" className="block mb-2 text-sm font-medium text-slate-800">Suffix</label>
+        //                             <select
+        //                                 id="suffix"
+        //                                 value={custodian.suffix}
+        //                                 onChange={(e) => {
+        //                                     setCustodian({ ...custodian, suffix: e.target.value });
+        //                                 }}
+        //                                 className={inputClass(false)}
+        //                             >
+        //                                 {suffixes.map((suffix) => (
+        //                                     <option key={suffix} value={suffix}>
+        //                                         {suffix === "" ? "None" : suffix}
+        //                                     </option>
+        //                                 ))}
+        //                             </select>
+        //                         </div>
+        //                     </div>
+
+        //                     <div>
+        //                         <label htmlFor="id" className="block mb-2 text-sm font-medium text-slate-800">ID Number</label>
+        //                         <input type="text" name="id" id="id" value={custodian.id || ""} onChange={(e) => { setCustodian({ ...custodian, id: Number(e.target.value) }); setErrors((prev) => ({ ...prev, id: false })); }} className={inputClass(errors.id)} placeholder="ID Number" />
+        //                     </div>
+        //                     <div>
+        //                         <label htmlFor="role" className="block mb-2 text-sm font-medium text-green-800">Custodian Role</label>
+        //                         <div className="relative inline-block w-full">
+        //                             <button
+        //                                 type="button"
+        //                                 onClick={() => setShowRoleDropdown(!showRoleDropdown)}
+        //                                 className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.role ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}
+        //                             >
+        //                                 {custodian.role || "Select role"}
+        //                                 <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+        //                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+        //                                 </svg>
+        //                             </button>
+
+        //                             {showRoleDropdown && (
+        //                                 <div className="absolute z-20 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
+        //                                     <ul className="py-2 text-sm text-green-900">
+        //                                         {["Supervisor", "Janitor III", "Janitor II"].map((role) => (
+        //                                             <li key={role}>
+        //                                                 <button type="button" onClick={() => {
+        //                                                     setCustodian({ ...custodian, role });
+        //                                                     setErrors((prev) => ({ ...prev, role: false }));
+        //                                                     setShowRoleDropdown(false);
+        //                                                 }}
+        //                                                     className="w-full text-left px-4 py-2 hover:bg-gray-100"
+        //                                                 >
+        //                                                     {role}
+        //                                                 </button>
+        //                                             </li>
+        //                                         ))}
+        //                                     </ul>
+        //                                 </div>
+        //                             )}
+        //                         </div>
+        //                     </div>
+        //                     {(custodian.role === "Janitor II" || custodian.role === "Janitor III") && (
+        //                         <div className="relative inline-block w-full">
+        //                             <label htmlFor="custodianboss" className="block mb-2 text-sm font-medium text-green-800">{custodian.role === "Janitor III" ? "Supervisor's Name" : "J3's Name"}</label>
+        //                             <button
+        //                                 type="button"
+        //                                 onClick={() => setShowBossDropdown(!showBossDropdown)}
+        //                                 className={`text-white font-medium rounded-lg text-sm px-5 py-2.5 inline-flex justify-between items-center w-full ${errors.boss ? "ring-2 ring-red-500 bg-green-700" : "bg-green-700 hover:bg-green-600"} `}
+        //                             >
+        //                                 {custodian.boss_name || "Select name"}
+        //                                 <svg className="w-2.5 h-2.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+        //                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+        //                                 </svg>
+        //                             </button>
+
+        //                             {showBossDropdown && (
+        //                                 <div className="absolute z-10 mt-2 w-full bg-white divide-y divide-gray-100 rounded-lg shadow">
+        //                                     <ul className="py-2 text-sm text-green-900 max-h-56 overflow-y-auto">
+        //                                         {supervisors.map((supervisor) => (
+        //                                             <li key={supervisor.id}>
+        //                                                 <button type="button" onClick={() => {
+        //                                                     setCustodian({ ...custodian, boss_name: supervisor.name, boss_id: supervisor.id });
+        //                                                     setErrors((prev) => ({ ...prev, boss: false }));
+        //                                                     setShowBossDropdown(false);
+        //                                                 }}
+        //                                                     className="w-full text-left px-4 py-2 hover:bg-gray-100"
+        //                                                 >
+        //                                                     {supervisor.name}
+        //                                                 </button>
+        //                                             </li>
+        //                                         ))}
+        //                                     </ul>
+        //                                 </div>
+        //                             )}
+        //                         </div>
+        //                     )}
+        //                     <button
+        //                         type="submit"
+        //                         className="w-full text-white bg-green-700 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center disabled:cursor-progress disabled:bg-red-500 transition-colors duration-200"
+        //                     >
+        //                         Add Custodian
+        //                     </button>
+
+        //                     <a href="/" className="font-medium text-green-800 text-sm block pt-1 hover:underline">Back to home</a>
+        //                 </form>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
     )
 }
