@@ -4,7 +4,8 @@
 import { useState } from "react"
 import { Task } from "@/lib/types"
 import { useToast } from "@/app/components/Toast"
-import axios from "axios"
+import { Dropdown } from "@/app/components/Dropdown"
+import { Search } from "lucide-react";
 
 export default function addTask() {
 
@@ -26,16 +27,12 @@ export default function addTask() {
                         </h1>
                         <form className="flex flex-col min-h-full gap-4" onSubmit={handleSubmit}>
                             <div className="flex flex-col gap-4">
-                                <div className="inline-flex flex-row justify-between gap-3 lg:items-stretch lg:w-[50rem] lg:gap-0">
-                                    <div className="basis-[30rem]">
-                                        <label htmlFor="title" className="block mb-2 text-sm font-medium text-slate-800">Title</label>
+                                <div className="inline-flex gap-3 justify-between items-center">
+                                    <div className="basis-[30rem] flex flex-col gap-y-1">
+                                        <label htmlFor="title" className="block text-sm font-medium text-slate-800">Title</label>
                                         <input type="text" name="title" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5" placeholder="Title" />
                                     </div>
-                                    <div>
-                                        {/* Change: Dropdown */}
-                                        <label htmlFor="building_id" className="block mb-2 text-sm font-medium text-slate-800">Building</label>
-                                        <input type="text" name="building_id" id="building_id" className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"/>
-                                    </div>
+                                    <Dropdown id="building" name="Building" values={["KUY", "POST", "SAKAM"]} icon={<Search size={20}/>} className="text-black min-w-fit" />
                                 </div>
                                 <div>
                                     <label htmlFor="description" className="block mb-2 text-sm font-medium text-slate-800">Description</label>
