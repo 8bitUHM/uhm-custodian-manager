@@ -49,7 +49,7 @@ async def get_dashboard_stats(db: Session = Depends(get_db)):
     from models import Building, Task, Supervisor, J3, J2
     
     total_custodians = db.query(Supervisor).count() + db.query(J3).count() + db.query(J2).count()
-    active_custodians = db.query(Supervisor).count() + db.query(J3).count() + db.query(J2).count()
+    active_custodians = total_custodians
     total_buildings = db.query(Building).count()
     tasks_completed = db.query(Task).filter(Task.status == "completed").count()
     
@@ -104,7 +104,9 @@ async def get_j3s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depend
             id=j3.id,
             name=j3.name,
             supervisor_id=j3.supervisor_id,
-            j2_list=[j2s.id for j2s in j3.j2list]
+            j2_list=[j2s.id for j2s in j3.j2list],
+            groupnum=j3.groupnum,
+            hire_date=j3.hire_date,
         )
         for j3 in j3s
     ]
@@ -114,7 +116,7 @@ async def get_j3s_endpoint(j3_id: int, db: Session = Depends(get_db)):
     j3 = get_j3(db, j3_id=j3_id)
     if j3 is None:
         raise HTTPException(status_code=404, detail="J3 not found")
-    return J3Response(id=j3.id, name=j3.name, supervisor_id=j3.supervisor_id, j2_list=[j2s.id for j2s in j3.j2list])
+    return J3Response(id=j3.id, name=j3.name, supervisor_id=j3.supervisor_id, j2_list=[j2s.id for j2s in j3.j2list], groupnum=j3.groupnum, hire_date=j3.hire_date)
 
 # Supervisor endpoints
 @app.post("/api/supervisors/", response_model=SupervisorResponse)

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, date
 from models import TaskStatus
 import re
 
@@ -8,6 +8,9 @@ NAME_REGEX = r"^[A-Za-z\s'-]+$"
 
 MIN_ID_NUM = 1_000_000
 MAX_ID_NUM = 99_999_999
+
+MIN_GROUP_NUM = 1
+MAX_GROUP_NUM = 20
 
 # J2 schemas
 class J2Base(BaseModel):
@@ -41,6 +44,8 @@ class J3Base(BaseModel):
     id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
     name: str
     supervisor_id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
+    groupnum: int = Field(ge=MIN_GROUP_NUM, le=MAX_GROUP_NUM)
+    hire_date: date = Field(default_factory=date.today)
 
     @field_validator("name")
     @classmethod
@@ -54,6 +59,13 @@ class J3Base(BaseModel):
             raise ValueError(
                 "Name may only contain letters, spaces, and apostrophes"
             )
+        return v
+
+    @field_validator("hire_date")
+    @classmethod
+    def validate_hire_date(cls, v: date) -> date:
+        if v > date.today():
+            raise ValueError("Hire date cannot be in the future")
         return v
 
 class J3Create(J3Base):
