@@ -1,6 +1,10 @@
 from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 from models import Supervisor, J3, J2
+from datetime import datetime
+
+def hire_date_change(date_str: str):
+    return datetime.strptime(date_str, "%d-%b-%y").date()
 
 def seed():
     db: Session = SessionLocal()
@@ -25,22 +29,30 @@ def seed():
     j3_1 = J3(
         id=81427596, 
         name="Chester Baitlon", 
-        supervisor=super1
+        supervisor=super1,
+        groupnum=14,
+        hire_date=hire_date_change("3-Apr-23"),
     )
     j3_2 = J3(
         id=69328417, 
         name="Sandra Chang", 
-        supervisor=super1
+        supervisor=super1,
+        groupnum=10,
+        hire_date=hire_date_change("6-May-13")
     )
     j3_3 = J3(
         id=92571648, 
         name="Louis Laurito", 
-        supervisor=super2
+        supervisor=super2,
+        groupnum=11,
+        hire_date=hire_date_change("8-Sep-14"),
     )
     j3_4 = J3(
         id=2211111, 
         name="John Marcello", 
-        supervisor=super2
+        supervisor=super2,
+        groupnum=13,
+        hire_date=hire_date_change("16-Apr-20"),
     )
 
     # creates J2's

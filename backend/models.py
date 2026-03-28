@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, Enum
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, ForeignKey, Text, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
@@ -24,6 +24,8 @@ class J3(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
+    groupnum = Column(Integer, nullable=False, index=True)
+    hire_date = Column(Date, server_default=func.current_date())
 
     # thingies that help connect J3 and supervisor together
     supervisor_id = Column(Integer, ForeignKey("supervisors.id"))
