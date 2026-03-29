@@ -200,34 +200,6 @@ export default function addCustodian() {
                                             placeholder="ID Number"
                                         />
                                     </div>
-
-                                    {/* 
-
-                                    <div className="basis-[7rem]">
-                                        <label htmlFor="suffix" className="block mb-2 text-sm font-medium text-slate-800">Group Number</label>
-                                        <input type="text" name="lastname" value={custodian.lastName} id="lastname" onChange={(e) => { setCustodian({ ...custodian, lastName: e.target.value }); setErrors((prev) => ({ ...prev, lastName: false })); }} className={inputClass(errors.lastName)} placeholder="Last Name" />
-                                        
-                                        
-                                        <select
-                                            id="suffix"
-                                            value={custodian.suffix}
-                                            onChange={(e) => {
-                                                setCustodian({ ...custodian, suffix: e.target.value });
-                                            }}
-                                            className={inputClass(false)}
-                                        >
-                                            {suffixes.map((suffix) => (
-                                                <option key={suffix} value={suffix}>
-                                                    {suffix === "" ? "None" : suffix}
-                                                </option>
-                                            ))}
-                                        </select>
-
-                                        
-
-                                    </div>
-
-                                    */}
                                 </div>
 
                                 {/* The dropdown is a little too big. need to make this. Could make supervisor's name and group number on the same row. */}
