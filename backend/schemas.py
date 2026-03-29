@@ -1,46 +1,109 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List
-from datetime import datetime
+from datetime import datetime, date
 from models import TaskStatus
+import re
 
-# Custodian schemas
-class CustodianBase(BaseModel):
-    first_name: str
-    last_name: str
-    email: EmailStr
-    phone: Optional[str] = None
-    employee_id: Optional[str] = None
-    is_active: bool = True
+NAME_REGEX = r"^[A-Za-z\s'-]+$"
 
-class CustodianCreate(CustodianBase):
+MIN_ID_NUM = 1_000_000
+MAX_ID_NUM = 99_999_999
+
+MIN_GROUP_NUM = 1
+MAX_GROUP_NUM = 20
+
+# J2 schemas
+class J2Base(BaseModel):
+    id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
+    name: str
+    j3_id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
+    groupnum: int = Field(ge=MIN_GROUP_NUM, le=MAX_GROUP_NUM)
+    hire_date: date = Field(default_factory=date.today)
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        v = v.strip()
+
+        if not v:
+            raise ValueError("Name cannot be empty")
+
+        if not re.match(NAME_REGEX, v):
+            raise ValueError(
+                "Name may only contain letters, spaces, and apostrophes"
+            )
+        return v
+
+    @field_validator("hire_date")
+    @classmethod
+    def validate_hire_date(cls, v: date) -> date:
+        if v > date.today():
+            raise ValueError("Hire date cannot be in the future")
+        return v
+
+class J2Create(J2Base):
     pass
 
-class CustodianResponse(CustodianBase):
-    id: int
-    hire_date: datetime
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-
+class J2Response(J2Base):
     class Config:
         from_attributes = True
 
 # J3 schemas
 class J3Base(BaseModel):
-    id: int
+    id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
     name: str
-    supervisor_id: int
+    supervisor_id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
+    groupnum: int = Field(ge=MIN_GROUP_NUM, le=MAX_GROUP_NUM)
+    hire_date: date = Field(default_factory=date.today)
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        v = v.strip()
+
+        if not v:
+            raise ValueError("Name cannot be empty")
+
+        if not re.match(NAME_REGEX, v):
+            raise ValueError(
+                "Name may only contain letters, spaces, and apostrophes"
+            )
+        return v
+
+    @field_validator("hire_date")
+    @classmethod
+    def validate_hire_date(cls, v: date) -> date:
+        if v > date.today():
+            raise ValueError("Hire date cannot be in the future")
+        return v
 
 class J3Create(J3Base):
     pass
 
 class J3Response(J3Base):
+    j2_list: list[int] = []
+
     class Config:
         from_attributes = True
 
 # Supervisor schemas
 class SupervisorBase(BaseModel):
-    id: int
+    id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
     name: str
+
+    @field_validator("name")
+    @classmethod
+    def validate_name(cls, v: str) -> str:
+        v = v.strip()
+
+        if not v:
+            raise ValueError("Name cannot be empty")
+
+        if not re.match(NAME_REGEX, v):
+            raise ValueError(
+                "Name may only contain letters, spaces, and apostrophes"
+            )
+        return v
 
 class SupervisorCreate(SupervisorBase):
     pass

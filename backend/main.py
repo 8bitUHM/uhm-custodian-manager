@@ -1,18 +1,19 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from typing import List
 import os
 
 from database import get_db, engine
 from models import Base
-from schemas import CustodianCreate, CustodianResponse, BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse, J3Create, J3Response
+from schemas import BuildingCreate, BuildingResponse, TaskCreate, TaskResponse, SupervisorCreate, SupervisorResponse, J3Create, J3Response, J2Create, J2Response
 from crud import (
-    create_custodian, get_custodians, get_custodian,
     create_building, get_buildings, get_building,
     create_task, get_tasks, get_task,
     create_supervisor, get_supervisors, get_supervisor,
-    create_j3, get_j3s, get_j3
+    create_j3, get_j3s, get_j3,
+    create_j2, get_j2s, get_j2,
 )
 
 # Create database tables
@@ -45,10 +46,10 @@ async def health_check():
 @app.get("/api/dashboard/stats")
 async def get_dashboard_stats(db: Session = Depends(get_db)):
     from sqlalchemy import func
-    from models import Custodian, Building, Task
+    from models import Building, Task, Supervisor, J3, J2
     
-    total_custodians = db.query(Custodian).count()
-    active_custodians = db.query(Custodian).filter(Custodian.is_active == True).count()
+    total_custodians = db.query(Supervisor).count() + db.query(J3).count() + db.query(J2).count()
+    active_custodians = total_custodians
     total_buildings = db.query(Building).count()
     tasks_completed = db.query(Task).filter(Task.status == "completed").count()
     
@@ -59,44 +60,76 @@ async def get_dashboard_stats(db: Session = Depends(get_db)):
         "tasksCompleted": tasks_completed
     }
 
-# Custodian endpoints
-@app.post("/api/custodians/", response_model=CustodianResponse)
-async def create_custodian_endpoint(custodian: CustodianCreate, db: Session = Depends(get_db)):
-    return create_custodian(db=db, custodian=custodian)
+# j2 endpoints
+@app.post("/api/j2s/", response_model=J2Response)
+async def create_j2_endpoint(j2: J2Create, db: Session = Depends(get_db)):
+    try:
+        return create_j2(db=db, j2=j2)
+    # This is so the frontend can check if this specific error exists where the ID already exists in the database
+    except IntegrityError as error:
+        db.rollback()
+        if "unique constraint" in str(error.orig).lower():
+            raise HTTPException(status_code=400, detail="This ID already exists in the J2 database")
+        raise HTTPException(status_code=500, detail="Database error")
 
-@app.get("/api/custodians/", response_model=List[CustodianResponse])
-async def get_custodians_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    custodians = get_custodians(db, skip=skip, limit=limit)
-    return custodians
+@app.get("/api/j2s/", response_model=List[J2Response])
+async def get_j2s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    j2s = get_j2s(db, skip=skip, limit=limit)
+    return j2s
 
-@app.get("/api/custodians/{custodian_id}", response_model=CustodianResponse)
-async def get_custodian_endpoint(custodian_id: int, db: Session = Depends(get_db)):
-    custodian = get_custodian(db, custodian_id=custodian_id)
-    if custodian is None:
-        raise HTTPException(status_code=404, detail="Custodian not found")
-    return custodian
+@app.get("/api/j2s/{j2_id}", response_model=J2Response)
+async def get_j2s_endpoint(j2_id: int, db: Session = Depends(get_db)):
+    j2 = get_j2(db, j2_id=j2_id)
+    if j2 is None:
+        raise HTTPException(status_code=404, detail="J2 not found")
+    return j2
 
 # j3 endpoints
 @app.post("/api/j3s/", response_model=J3Response)
 async def create_j3_endpoint(j3: J3Create, db: Session = Depends(get_db)):
-    return create_j3(db=db, j3=j3)
+    try:
+        return create_j3(db=db, j3=j3)
+    # This is so the frontend can check if this specific error exists where the ID already exists in the database
+    except IntegrityError as error:
+        db.rollback()
+        if "unique constraint" in str(error.orig).lower():
+            raise HTTPException(status_code=400, detail="This ID already exists in the J3 database")
+        raise HTTPException(status_code=500, detail="Database error")
 
 @app.get("/api/j3s/", response_model=List[J3Response])
 async def get_j3s_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     j3s = get_j3s(db, skip=skip, limit=limit)
-    return j3s
+    return [
+        J3Response(
+            id=j3.id,
+            name=j3.name,
+            supervisor_id=j3.supervisor_id,
+            j2_list=[j2s.id for j2s in j3.j2list],
+            groupnum=j3.groupnum,
+            hire_date=j3.hire_date,
+        )
+        for j3 in j3s
+    ]
 
 @app.get("/api/j3s/{j3_id}", response_model=J3Response)
 async def get_j3s_endpoint(j3_id: int, db: Session = Depends(get_db)):
     j3 = get_j3(db, j3_id=j3_id)
     if j3 is None:
         raise HTTPException(status_code=404, detail="J3 not found")
-    return j3
+    return J3Response(id=j3.id, name=j3.name, supervisor_id=j3.supervisor_id, j2_list=[j2s.id for j2s in j3.j2list], groupnum=j3.groupnum, hire_date=j3.hire_date)
 
 # Supervisor endpoints
 @app.post("/api/supervisors/", response_model=SupervisorResponse)
 async def create_supervisor_endpoint(supervisor: SupervisorCreate, db: Session = Depends(get_db)):
-    return create_supervisor(db=db, supervisor=supervisor)
+    try:
+        return create_supervisor(db=db, supervisor=supervisor)
+    
+    # This is so the frontend can check if this specific error exists where the ID already exists in the database
+    except IntegrityError as error:
+        db.rollback()
+        if "unique constraint" in str(error.orig).lower():
+            raise HTTPException(status_code=400, detail="This ID already exists in the Supervisor database")
+        raise HTTPException(status_code=500, detail="Database error")
 
 @app.get("/api/supervisors/", response_model=List[SupervisorResponse])
 async def get_supervisors_endpoint(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Text, Enum
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Date, ForeignKey, Text, Enum
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 import enum
@@ -9,23 +9,6 @@ class TaskStatus(str, enum.Enum):
     in_progress = "in_progress"
     completed = "completed"
     cancelled = "cancelled"
-
-class Custodian(Base):
-    __tablename__ = "custodians"
-
-    id = Column(Integer, primary_key=True, index=True)
-    first_name = Column(String(100), nullable=False)
-    last_name = Column(String(100), nullable=False)
-    email = Column(String(255), unique=True, index=True, nullable=False)
-    phone = Column(String(20))
-    employee_id = Column(String(50), unique=True, index=True)
-    is_active = Column(Boolean, default=True)
-    hire_date = Column(DateTime(timezone=True), server_default=func.now())
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
-
-    # Relationships
-    tasks = relationship("Task", back_populates="custodian")
 
 class Supervisor(Base):
     __tablename__ = "supervisors"
@@ -41,10 +24,27 @@ class J3(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
+    groupnum = Column(Integer, nullable=False, index=True)
+    hire_date = Column(Date, server_default=func.current_date())
 
     # thingies that help connect J3 and supervisor together
     supervisor_id = Column(Integer, ForeignKey("supervisors.id"))
     supervisor = relationship("Supervisor", back_populates="j3list")
+
+    # The Janitor 2's that the J3 is in charge of
+    j2list = relationship("J2", back_populates="j3")
+
+class J2(Base):
+    __tablename__ = "j2"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    groupnum = Column(Integer, nullable=False, index=True)
+    hire_date = Column(Date, server_default=func.current_date())
+
+    # thingies that help connect J2 and J3 together
+    j3_id = Column(Integer, ForeignKey("j3.id"))
+    j3 = relationship("J3", back_populates="j2list")
 
 class Building(Base):
     __tablename__ = "buildings"
@@ -70,7 +70,7 @@ class Task(Base):
     description = Column(Text)
     status = Column(Enum(TaskStatus), default=TaskStatus.pending)
     priority = Column(String(20), default="medium")  # low, medium, high
-    assigned_to = Column(Integer, ForeignKey("custodians.id"))
+    # assigned_to = Column(Integer, ForeignKey("custodians.id")) // Custodian class has been deleted. change to supervisor, j3, or j2
     building_id = Column(Integer, ForeignKey("buildings.id"))
     scheduled_date = Column(DateTime(timezone=True))
     completed_date = Column(DateTime(timezone=True))
@@ -78,5 +78,5 @@ class Task(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    custodian = relationship("Custodian", back_populates="tasks")
+    # custodian = relationship("Custodian", back_populates="tasks") // Custodian class has been deleted. change to supervisor, j3, or j2
     building = relationship("Building", back_populates="tasks")

@@ -1,6 +1,21 @@
-type Supervisor = {
+type Custodian = {
   id?: number;
-  name: string | null;
+  firstName: string;
+  lastName: string;
+  role?: string;
+  boss_name?: string | null;
+  boss_id?: number;
+  groupnum?: number;
 };
 
-export type { Supervisor };
+type Supervisor = {
+  id: number;
+  name: string;
+};
+
+type nameHolder = {
+  firstName: string;
+  lastName: string;
+};
+
+export type { Custodian, Supervisor, nameHolder };
