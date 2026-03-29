@@ -142,6 +142,7 @@ export default function addCustodian() {
             case "Janitor II":
                 endpoint = "http://localhost:8000/api/j2s/";
                 custData.j3_id = custodian.boss_id;
+                custData.groupnum = custodian.groupnum;
                 break;
             default:
                 showToast("Please select a role", "fail");
@@ -228,6 +229,8 @@ export default function addCustodian() {
 
                                     */}
                                 </div>
+
+                                {/* The dropdown is a little too big. need to make this. Could make supervisor's name and group number on the same row. */}
                                 <div className="inline-flex flex-row justify-between gap-3 lg:items-stretch lg:w-[50rem] lg:gap-0">
                                     <div className="basis-[50rem] relative">
                                         <label htmlFor="role" className="block mb-2 text-sm font-medium text-slate-800">Custodian Role</label>

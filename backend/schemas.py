@@ -17,6 +17,8 @@ class J2Base(BaseModel):
     id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
     name: str
     j3_id: int = Field(ge=MIN_ID_NUM, le=MAX_ID_NUM)
+    groupnum: int = Field(ge=MIN_GROUP_NUM, le=MAX_GROUP_NUM)
+    hire_date: date = Field(default_factory=date.today)
 
     @field_validator("name")
     @classmethod
@@ -30,6 +32,13 @@ class J2Base(BaseModel):
             raise ValueError(
                 "Name may only contain letters, spaces, and apostrophes"
             )
+        return v
+
+    @field_validator("hire_date")
+    @classmethod
+    def validate_hire_date(cls, v: date) -> date:
+        if v > date.today():
+            raise ValueError("Hire date cannot be in the future")
         return v
 
 class J2Create(J2Base):
