@@ -39,6 +39,8 @@ class J2(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False)
+    groupnum = Column(Integer, nullable=False, index=True)
+    hire_date = Column(Date, server_default=func.current_date())
 
     # thingies that help connect J2 and J3 together
     j3_id = Column(Integer, ForeignKey("j3.id"))

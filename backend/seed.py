@@ -59,42 +59,58 @@ def seed():
     j2_1 = J2(
         id=36192745, 
         name="Beverly Abad", 
-        j3=j3_1
+        j3=j3_1,
+        groupnum=14,
+        hire_date=hire_date_change("16-Oct-17"),
     )
     j2_2 = J2(
         id=84726139, 
         name="Diana Alcoran", 
-        j3=j3_1
+        j3=j3_1,
+        groupnum=14,
+        hire_date=hire_date_change("27-Apr-15"),
     )
     j2_3 = J2(
         id=59283476, 
         name="Louie Aquino", 
-        j3=j3_2
+        j3=j3_2,
+        groupnum=10,
+        hire_date=hire_date_change("20-Apr-15"),
     )
     j2_4 = J2(
         id=71639428, 
         name="Lance Belen", 
-        j3=j3_2
+        j3=j3_2,
+        groupnum=10,
+        hire_date=hire_date_change("14-Oct-19"),
     )
     j2_5 = J2(
         id=43826197, 
         name="Rebecca Waiwaiole", 
-        j3=j3_3
+        j3=j3_3,
+        groupnum=11,
+        hire_date=hire_date_change("3-Mar-00"),
     )
     j2_6 = J2(
         id=96472815, 
         name="Glenn Sato", 
-        j3=j3_3
+        j3=j3_3,
+        groupnum=11,
+        hire_date=hire_date_change("16-May-17"),
     )
     j2_7 = J2(
         id=28573964, 
         name="Darren Uehara", 
-        j3=j3_4
+        j3=j3_4,
+        groupnum=13,
+        hire_date=hire_date_change("27-Sep-16"),
     )
     j2_8 = J2(
         id=12121212, 
         name="Akira Sharp", 
-        j3=j3_4
+        j3=j3_4,
+        groupnum=16,
+        hire_date=hire_date_change("1-Oct-18"),
     )
 
     # Adds all the data above into the database for testing
