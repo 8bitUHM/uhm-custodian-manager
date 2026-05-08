@@ -1,13 +1,14 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { ToastProvider } from './components/Toast'
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import { Toaster } from "@/components/ui/sonner"
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: 'Custodian Manager Dashboard',
-  description: 'Manage custodians and track their activities',
+  title: "UHM Custodial Manager",
+  description:
+    "Manage UH Manoa custodial staff, supervisors, and group assignments.",
 }
 
 export default function RootLayout({
@@ -18,7 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ToastProvider>{children}</ToastProvider>
+        {children}
+        <Toaster richColors closeButton />
       </body>
     </html>
   )

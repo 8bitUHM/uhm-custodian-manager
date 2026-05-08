@@ -88,6 +88,21 @@ Should have [**Docker Desktop**](https://www.docker.com/get-started/) installed.
    - Backend API: http://localhost:8000
    - API Documentation: http://localhost:8000/docs
 
+### Seeding the database
+
+The repository ships with `backend/seed_data.json`, a snapshot of the BGM custodial
+org chart extracted from `EMPLOYEE GROUP INFO.xlsx` (3 Janitor Supervisor IIs,
+18 Janitor IIIs, and 126 Janitor IIs, organized by wing and work group).
+
+After the stack is up, populate the database with:
+
+```bash
+docker exec custodian_backend python seed.py
+```
+
+The seeder is idempotent: it clears `custodians`, `j3`, and `supervisors` before
+inserting, so it is safe to re-run. Buildings and tasks are not touched.
+
 ## Development
 
 ### Pulling from main (after PR is merged)
