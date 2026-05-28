@@ -11,6 +11,8 @@ import {
   ClipboardList,
   BarChart3,
   Sparkles,
+  Timer,
+  Calculator,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -28,6 +30,13 @@ const NAV: NavItem[] = [
   { href: "/j3s", label: "Janitors III", icon: UserCog, group: "Org" },
   { href: "/supervisors", label: "Supervisors", icon: Shield, group: "Org" },
   { href: "/buildings", label: "Buildings", icon: Building2, group: "Operations" },
+  { href: "/workload", label: "Workload", icon: Calculator, group: "Operations" },
+  {
+    href: "/settings/cleaning-standards",
+    label: "Cleaning standards",
+    icon: Timer,
+    group: "Operations",
+  },
   { href: "/tasks", label: "Tasks", icon: ClipboardList, group: "Operations", disabled: true },
   { href: "/reports", label: "Reports", icon: BarChart3, group: "Operations", disabled: true },
 ]

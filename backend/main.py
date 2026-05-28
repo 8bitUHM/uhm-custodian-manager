@@ -1,7 +1,7 @@
 import json
 from datetime import date
 
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -36,6 +36,19 @@ from schemas import (
     PartitionScheduleResponse,
     PartitionScheduleRow,
     PartitionScheduleCustodian,
+    CleaningSpaceTypeResponse,
+    CleaningSpaceTypeUpdate,
+    CleaningSpaceTypeCreate,
+    CleaningSettingsResponse,
+    CleaningSettingsUpdate,
+    SpaceTypeMappingResponse,
+    SpaceTypeMappingCreate,
+    SpaceTypeMappingUpdate,
+    BuildingWorkloadResponse,
+    WorkloadBreakdownRow,
+    UnmappedSpaceSampleResponse,
+    WorkloadSummaryRow,
+    AimImportResponse,
 )
 from crud import (
     create_custodian,
@@ -70,7 +83,21 @@ from crud import (
     get_partition_rotation,
     upsert_partition_rotation,
     partition_schedule_rows,
+    list_cleaning_space_types,
+    get_cleaning_space_type,
+    create_cleaning_space_type,
+    update_cleaning_space_type,
+    get_cleaning_settings,
+    update_cleaning_settings,
+    list_space_type_mappings,
+    get_space_type_mapping,
+    create_space_type_mapping,
+    update_space_type_mapping,
+    delete_space_type_mapping,
 )
+from aim_import import import_aim_for_building
+from workload import compute_building_workload, recompute_space_minutes_for_building
+from models import CleaningSpaceType, SpaceTypeMapping
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -556,6 +583,282 @@ async def partition_schedule_endpoint(
         pool_count=n_c,
         assignments=assignments,
     )
+
+
+# ---------------------------------------------------------------------------
+# Cleaning standards & workload
+# ---------------------------------------------------------------------------
+def _mapping_to_response(m: SpaceTypeMapping) -> SpaceTypeMappingResponse:
+    st = m.cleaning_space_type
+    return SpaceTypeMappingResponse(
+        id=m.id,
+        cleaning_space_type_id=m.cleaning_space_type_id,
+        cleaning_space_type_slug=st.slug if st else None,
+        cleaning_space_type_label=st.label if st else None,
+        match_field=m.match_field,
+        match_kind=m.match_kind,
+        match_value=m.match_value,
+        priority=m.priority,
+        is_active=m.is_active,
+    )
+
+
+def _workload_to_response(db: Session, building_id: int) -> BuildingWorkloadResponse:
+    b = get_building(db, building_id)
+    wl = compute_building_workload(db, building_id)
+    return BuildingWorkloadResponse(
+        building_id=wl.building_id,
+        building_name=b.name if b else None,
+        building_code=b.building_code if b else None,
+        total_minutes=wl.total_minutes,
+        workday_minutes=wl.workday_minutes,
+        recommended_headcount=wl.recommended_headcount,
+        imported_space_count=wl.imported_space_count,
+        last_import_at=wl.last_import_at,
+        by_space_type=[
+            WorkloadBreakdownRow(
+                space_type_id=r.space_type_id,
+                slug=r.slug,
+                label=r.label,
+                count=r.count,
+                minutes=round(r.minutes, 2),
+            )
+            for r in wl.by_space_type
+        ],
+        unmapped_samples=[
+            UnmappedSpaceSampleResponse(
+                location_code=u.location_code,
+                description=u.description,
+                effective_sqft=u.effective_sqft,
+                minutes=u.minutes,
+            )
+            for u in wl.unmapped_samples
+        ],
+    )
+
+
+@app.get("/api/cleaning-standards/types", response_model=List[CleaningSpaceTypeResponse])
+async def list_cleaning_types_endpoint(db: Session = Depends(get_db)):
+    return list_cleaning_space_types(db)
+
+
+@app.post("/api/cleaning-standards/types", response_model=CleaningSpaceTypeResponse)
+async def create_cleaning_type_endpoint(
+    body: CleaningSpaceTypeCreate, db: Session = Depends(get_db)
+):
+    existing = (
+        db.query(CleaningSpaceType)
+        .filter(CleaningSpaceType.slug == body.slug)
+        .first()
+    )
+    if existing:
+        raise HTTPException(status_code=400, detail="Slug already exists")
+    return create_cleaning_space_type(
+        db,
+        slug=body.slug,
+        label=body.label,
+        minutes_per_unit=body.minutes_per_unit,
+        unit=body.unit,
+        sort_order=body.sort_order,
+    )
+
+
+@app.put(
+    "/api/cleaning-standards/types/{type_id}",
+    response_model=CleaningSpaceTypeResponse,
+)
+async def update_cleaning_type_endpoint(
+    type_id: int,
+    body: CleaningSpaceTypeUpdate,
+    db: Session = Depends(get_db),
+):
+    row = update_cleaning_space_type(
+        db,
+        type_id,
+        label=body.label,
+        minutes_per_unit=body.minutes_per_unit,
+        unit=body.unit,
+        is_active=body.is_active,
+        sort_order=body.sort_order,
+    )
+    if row is None:
+        raise HTTPException(status_code=404, detail="Space type not found")
+    recompute_all_buildings_with_spaces(db)
+    return row
+
+
+@app.get("/api/cleaning-standards/settings", response_model=CleaningSettingsResponse)
+async def get_cleaning_settings_endpoint(db: Session = Depends(get_db)):
+    s = get_cleaning_settings(db)
+    return CleaningSettingsResponse(
+        workday_minutes=s.workday_minutes,
+        sqft_preference=s.sqft_preference,
+    )
+
+
+@app.put("/api/cleaning-standards/settings", response_model=CleaningSettingsResponse)
+async def update_cleaning_settings_endpoint(
+    body: CleaningSettingsUpdate, db: Session = Depends(get_db)
+):
+    s = update_cleaning_settings(
+        db,
+        workday_minutes=body.workday_minutes,
+        sqft_preference=body.sqft_preference,
+    )
+    recompute_all_buildings_with_spaces(db)
+    return CleaningSettingsResponse(
+        workday_minutes=s.workday_minutes,
+        sqft_preference=s.sqft_preference,
+    )
+
+
+@app.get(
+    "/api/cleaning-standards/mappings",
+    response_model=List[SpaceTypeMappingResponse],
+)
+async def list_mappings_endpoint(db: Session = Depends(get_db)):
+    from sqlalchemy.orm import joinedload
+
+    rows = (
+        db.query(SpaceTypeMapping)
+        .options(joinedload(SpaceTypeMapping.cleaning_space_type))
+        .order_by(SpaceTypeMapping.priority.desc(), SpaceTypeMapping.id)
+        .all()
+    )
+    return [_mapping_to_response(m) for m in rows]
+
+
+@app.post(
+    "/api/cleaning-standards/mappings",
+    response_model=SpaceTypeMappingResponse,
+)
+async def create_mapping_endpoint(
+    body: SpaceTypeMappingCreate, db: Session = Depends(get_db)
+):
+    if get_cleaning_space_type(db, body.cleaning_space_type_id) is None:
+        raise HTTPException(status_code=404, detail="Space type not found")
+    row = create_space_type_mapping(db, **body.model_dump())
+    from sqlalchemy.orm import joinedload
+
+    row = (
+        db.query(SpaceTypeMapping)
+        .options(joinedload(SpaceTypeMapping.cleaning_space_type))
+        .filter(SpaceTypeMapping.id == row.id)
+        .first()
+    )
+    recompute_all_buildings_with_spaces(db)
+    return _mapping_to_response(row)
+
+
+@app.put(
+    "/api/cleaning-standards/mappings/{mapping_id}",
+    response_model=SpaceTypeMappingResponse,
+)
+async def update_mapping_endpoint(
+    mapping_id: int,
+    body: SpaceTypeMappingUpdate,
+    db: Session = Depends(get_db),
+):
+    data = body.model_dump(exclude_unset=True)
+    if "cleaning_space_type_id" in data and data["cleaning_space_type_id"] is not None:
+        if get_cleaning_space_type(db, data["cleaning_space_type_id"]) is None:
+            raise HTTPException(status_code=404, detail="Space type not found")
+    row = update_space_type_mapping(db, mapping_id, **data)
+    if row is None:
+        raise HTTPException(status_code=404, detail="Mapping not found")
+    from sqlalchemy.orm import joinedload
+
+    row = (
+        db.query(SpaceTypeMapping)
+        .options(joinedload(SpaceTypeMapping.cleaning_space_type))
+        .filter(SpaceTypeMapping.id == mapping_id)
+        .first()
+    )
+    recompute_all_buildings_with_spaces(db)
+    return _mapping_to_response(row)
+
+
+@app.delete("/api/cleaning-standards/mappings/{mapping_id}")
+async def delete_mapping_endpoint(mapping_id: int, db: Session = Depends(get_db)):
+    if not delete_space_type_mapping(db, mapping_id):
+        raise HTTPException(status_code=404, detail="Mapping not found")
+    recompute_all_buildings_with_spaces(db)
+    return {"ok": True, "id": mapping_id}
+
+
+def recompute_all_buildings_with_spaces(db: Session) -> None:
+    from models import BuildingSpace
+
+    building_ids = [
+        r[0]
+        for r in db.query(BuildingSpace.building_id).distinct().all()
+    ]
+    for bid in building_ids:
+        recompute_space_minutes_for_building(db, bid)
+
+
+@app.post(
+    "/api/buildings/{building_id}/spaces/import",
+    response_model=AimImportResponse,
+)
+async def import_spaces_endpoint(
+    building_id: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
+    if get_building(db, building_id) is None:
+        raise HTTPException(status_code=404, detail="Building not found")
+    if not file.filename or not file.filename.lower().endswith((".xlsx", ".xls")):
+        raise HTTPException(status_code=400, detail="Upload an Excel .xlsx file")
+    content = await file.read()
+    try:
+        from io import BytesIO
+
+        result = import_aim_for_building(db, building_id, BytesIO(content))
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Import failed: {e}") from e
+    return AimImportResponse(**result)
+
+
+@app.get(
+    "/api/buildings/{building_id}/workload",
+    response_model=BuildingWorkloadResponse,
+)
+async def building_workload_endpoint(building_id: int, db: Session = Depends(get_db)):
+    if get_building(db, building_id) is None:
+        raise HTTPException(status_code=404, detail="Building not found")
+    return _workload_to_response(db, building_id)
+
+
+@app.post("/api/buildings/{building_id}/workload/recompute")
+async def recompute_workload_endpoint(building_id: int, db: Session = Depends(get_db)):
+    if get_building(db, building_id) is None:
+        raise HTTPException(status_code=404, detail="Building not found")
+    count = recompute_space_minutes_for_building(db, building_id)
+    return {"building_id": building_id, "spaces_updated": count}
+
+
+@app.get("/api/workload/summary", response_model=List[WorkloadSummaryRow])
+async def workload_summary_endpoint(db: Session = Depends(get_db)):
+    buildings = get_buildings(db)
+    rows: List[WorkloadSummaryRow] = []
+    for b in buildings:
+        wl = compute_building_workload(db, b.id)
+        rows.append(
+            WorkloadSummaryRow(
+                building_id=b.id,
+                building_name=b.name,
+                building_code=b.building_code,
+                public_slug=b.public_slug,
+                imported_space_count=wl.imported_space_count,
+                total_minutes=wl.total_minutes,
+                recommended_headcount=wl.recommended_headcount,
+                last_import_at=wl.last_import_at,
+            )
+        )
+    return rows
 
 
 # ---------------------------------------------------------------------------

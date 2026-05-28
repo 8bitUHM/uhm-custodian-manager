@@ -210,6 +210,115 @@ export interface PartitionScheduleResponse {
   assignments: PartitionScheduleRow[]
 }
 
+export type CleaningUnit = "per_space" | "per_sqft"
+export type MatchField = "description" | "primary_type"
+export type MatchKind = "exact" | "contains" | "regex"
+
+export interface CleaningSpaceType {
+  id: number
+  slug: string
+  label: string
+  minutes_per_unit: number
+  unit: CleaningUnit
+  is_active: boolean
+  sort_order: number
+}
+
+export interface CleaningSpaceTypeUpdate {
+  label?: string
+  minutes_per_unit?: number
+  unit?: CleaningUnit
+  is_active?: boolean
+  sort_order?: number
+}
+
+export interface CleaningSpaceTypeCreate {
+  slug: string
+  label: string
+  minutes_per_unit: number
+  unit?: CleaningUnit
+  sort_order?: number
+}
+
+export interface CleaningSettings {
+  workday_minutes: number
+  sqft_preference: string
+}
+
+export interface CleaningSettingsUpdate {
+  workday_minutes?: number
+  sqft_preference?: string
+}
+
+export interface SpaceTypeMapping {
+  id: number
+  cleaning_space_type_id: number
+  cleaning_space_type_slug?: string | null
+  cleaning_space_type_label?: string | null
+  match_field: MatchField
+  match_kind: MatchKind
+  match_value: string
+  priority: number
+  is_active: boolean
+}
+
+export interface SpaceTypeMappingCreate {
+  cleaning_space_type_id: number
+  match_field?: MatchField
+  match_kind?: MatchKind
+  match_value: string
+  priority?: number
+  is_active?: boolean
+}
+
+export interface WorkloadBreakdownRow {
+  space_type_id?: number | null
+  slug: string
+  label: string
+  count: number
+  minutes: number
+}
+
+export interface UnmappedSpaceSample {
+  location_code: string
+  description?: string | null
+  effective_sqft?: number | null
+  minutes: number
+}
+
+export interface BuildingWorkload {
+  building_id: number
+  building_name?: string | null
+  building_code?: string | null
+  total_minutes: number
+  workday_minutes: number
+  recommended_headcount: number
+  imported_space_count: number
+  last_import_at?: string | null
+  by_space_type: WorkloadBreakdownRow[]
+  unmapped_samples: UnmappedSpaceSample[]
+}
+
+export interface WorkloadSummaryRow {
+  building_id: number
+  building_name: string
+  building_code?: string | null
+  public_slug?: string | null
+  imported_space_count: number
+  total_minutes: number
+  recommended_headcount: number
+  last_import_at?: string | null
+}
+
+export interface AimImportResult {
+  building_id: number
+  import_batch_id: string
+  imported_count: number
+  skipped_rows: number
+  skipped_property_codes: number[]
+  allowed_property_codes: number[]
+}
+
 export interface CustodianListResponse {
   items: Custodian[]
   total: number

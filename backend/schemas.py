@@ -277,6 +277,134 @@ class PartitionScheduleResponse(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Cleaning standards & workload
+# ---------------------------------------------------------------------------
+CleaningUnitLiteral = Literal["per_space", "per_sqft"]
+MatchFieldLiteral = Literal["description", "primary_type"]
+MatchKindLiteral = Literal["exact", "contains", "regex"]
+
+
+class CleaningSpaceTypeResponse(BaseModel):
+    id: int
+    slug: str
+    label: str
+    minutes_per_unit: float
+    unit: CleaningUnitLiteral
+    is_active: bool
+    sort_order: int
+
+    class Config:
+        from_attributes = True
+
+
+class CleaningSpaceTypeUpdate(BaseModel):
+    label: Optional[str] = None
+    minutes_per_unit: Optional[float] = None
+    unit: Optional[CleaningUnitLiteral] = None
+    is_active: Optional[bool] = None
+    sort_order: Optional[int] = None
+
+
+class CleaningSpaceTypeCreate(BaseModel):
+    slug: str = Field(..., max_length=80)
+    label: str = Field(..., max_length=200)
+    minutes_per_unit: float
+    unit: CleaningUnitLiteral = "per_space"
+    sort_order: int = 0
+
+
+class CleaningSettingsResponse(BaseModel):
+    workday_minutes: int
+    sqft_preference: str
+
+
+class CleaningSettingsUpdate(BaseModel):
+    workday_minutes: Optional[int] = Field(None, ge=1, le=24 * 60)
+    sqft_preference: Optional[str] = None
+
+
+class SpaceTypeMappingResponse(BaseModel):
+    id: int
+    cleaning_space_type_id: int
+    cleaning_space_type_slug: Optional[str] = None
+    cleaning_space_type_label: Optional[str] = None
+    match_field: MatchFieldLiteral
+    match_kind: MatchKindLiteral
+    match_value: str
+    priority: int
+    is_active: bool
+
+    class Config:
+        from_attributes = True
+
+
+class SpaceTypeMappingCreate(BaseModel):
+    cleaning_space_type_id: int
+    match_field: MatchFieldLiteral = "description"
+    match_kind: MatchKindLiteral = "contains"
+    match_value: str = Field(..., max_length=200)
+    priority: int = 0
+    is_active: bool = True
+
+
+class SpaceTypeMappingUpdate(BaseModel):
+    cleaning_space_type_id: Optional[int] = None
+    match_field: Optional[MatchFieldLiteral] = None
+    match_kind: Optional[MatchKindLiteral] = None
+    match_value: Optional[str] = Field(None, max_length=200)
+    priority: Optional[int] = None
+    is_active: Optional[bool] = None
+
+
+class WorkloadBreakdownRow(BaseModel):
+    space_type_id: Optional[int] = None
+    slug: str
+    label: str
+    count: int
+    minutes: float
+
+
+class UnmappedSpaceSampleResponse(BaseModel):
+    location_code: str
+    description: Optional[str] = None
+    effective_sqft: Optional[float] = None
+    minutes: float
+
+
+class BuildingWorkloadResponse(BaseModel):
+    building_id: int
+    building_name: Optional[str] = None
+    building_code: Optional[str] = None
+    total_minutes: float
+    workday_minutes: int
+    recommended_headcount: int
+    imported_space_count: int
+    last_import_at: Optional[datetime] = None
+    by_space_type: List[WorkloadBreakdownRow]
+    unmapped_samples: List[UnmappedSpaceSampleResponse]
+
+
+class WorkloadSummaryRow(BaseModel):
+    building_id: int
+    building_name: str
+    building_code: Optional[str] = None
+    public_slug: Optional[str] = None
+    imported_space_count: int
+    total_minutes: float
+    recommended_headcount: int
+    last_import_at: Optional[datetime] = None
+
+
+class AimImportResponse(BaseModel):
+    building_id: int
+    import_batch_id: str
+    imported_count: int
+    skipped_rows: int
+    skipped_property_codes: List[int]
+    allowed_property_codes: List[int]
+
+
+# ---------------------------------------------------------------------------
 # Task
 # ---------------------------------------------------------------------------
 class TaskBase(BaseModel):

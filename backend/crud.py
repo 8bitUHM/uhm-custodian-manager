@@ -14,6 +14,9 @@ from models import (
     custodian_building,
     BuildingPartition,
     BuildingPartitionRotation,
+    CleaningSpaceType,
+    CleaningSettings,
+    SpaceTypeMapping,
 )
 from schemas import (
     CustodianCreate,
@@ -432,6 +435,129 @@ def partition_schedule_rows(
         ci = (i + day_off) % n_c
         out.append((p, pool[ci]))
     return out, anchor, day_off, n_p, n_c
+
+
+# ---------------------------------------------------------------------------
+# Cleaning standards CRUD
+# ---------------------------------------------------------------------------
+def list_cleaning_space_types(db: Session) -> List[CleaningSpaceType]:
+    return (
+        db.query(CleaningSpaceType)
+        .order_by(CleaningSpaceType.sort_order, CleaningSpaceType.label)
+        .all()
+    )
+
+
+def get_cleaning_space_type(db: Session, type_id: int) -> Optional[CleaningSpaceType]:
+    return db.query(CleaningSpaceType).filter(CleaningSpaceType.id == type_id).first()
+
+
+def create_cleaning_space_type(
+    db: Session,
+    slug: str,
+    label: str,
+    minutes_per_unit: float,
+    unit: str,
+    sort_order: int = 0,
+) -> CleaningSpaceType:
+    row = CleaningSpaceType(
+        slug=slug,
+        label=label,
+        minutes_per_unit=minutes_per_unit,
+        unit=unit,
+        sort_order=sort_order,
+        is_active=True,
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+def update_cleaning_space_type(
+    db: Session, type_id: int, **kwargs
+) -> Optional[CleaningSpaceType]:
+    row = get_cleaning_space_type(db, type_id)
+    if row is None:
+        return None
+    for k, v in kwargs.items():
+        if v is not None and hasattr(row, k):
+            setattr(row, k, v)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+def get_cleaning_settings(db: Session) -> CleaningSettings:
+    row = db.query(CleaningSettings).filter(CleaningSettings.id == 1).first()
+    if row is None:
+        row = CleaningSettings(
+            id=1,
+            workday_minutes=480,
+            sqft_preference="polyline_sqft,cad_gross,user_sqft",
+        )
+        db.add(row)
+        db.commit()
+        db.refresh(row)
+    return row
+
+
+def update_cleaning_settings(
+    db: Session,
+    workday_minutes: Optional[int] = None,
+    sqft_preference: Optional[str] = None,
+) -> CleaningSettings:
+    row = get_cleaning_settings(db)
+    if workday_minutes is not None:
+        row.workday_minutes = workday_minutes
+    if sqft_preference is not None:
+        row.sqft_preference = sqft_preference
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+def list_space_type_mappings(db: Session) -> List[SpaceTypeMapping]:
+    return (
+        db.query(SpaceTypeMapping)
+        .order_by(SpaceTypeMapping.priority.desc(), SpaceTypeMapping.id)
+        .all()
+    )
+
+
+def get_space_type_mapping(db: Session, mapping_id: int) -> Optional[SpaceTypeMapping]:
+    return db.query(SpaceTypeMapping).filter(SpaceTypeMapping.id == mapping_id).first()
+
+
+def create_space_type_mapping(db: Session, **kwargs) -> SpaceTypeMapping:
+    row = SpaceTypeMapping(**kwargs)
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+def update_space_type_mapping(
+    db: Session, mapping_id: int, **kwargs
+) -> Optional[SpaceTypeMapping]:
+    row = get_space_type_mapping(db, mapping_id)
+    if row is None:
+        return None
+    for k, v in kwargs.items():
+        if v is not None and hasattr(row, k):
+            setattr(row, k, v)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+def delete_space_type_mapping(db: Session, mapping_id: int) -> bool:
+    row = get_space_type_mapping(db, mapping_id)
+    if row is None:
+        return False
+    db.delete(row)
+    db.commit()
+    return True
 
 
 # ---------------------------------------------------------------------------

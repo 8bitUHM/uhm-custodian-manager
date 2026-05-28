@@ -10,6 +10,8 @@ from sqlalchemy import (
     Enum,
     Table,
     UniqueConstraint,
+    Float,
+    Numeric,
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -136,6 +138,110 @@ class Building(Base):
         "BuildingPartitionRotation",
         back_populates="building",
         cascade="all, delete-orphan",
+    )
+    spaces = relationship(
+        "BuildingSpace",
+        back_populates="building",
+        cascade="all, delete-orphan",
+    )
+
+
+class CleaningUnit(str, enum.Enum):
+    per_space = "per_space"
+    per_sqft = "per_sqft"
+
+
+class CleaningSpaceType(Base):
+    """Configurable cleaning time standard per space category."""
+
+    __tablename__ = "cleaning_space_types"
+
+    id = Column(Integer, primary_key=True, index=True)
+    slug = Column(String(80), unique=True, nullable=False, index=True)
+    label = Column(String(200), nullable=False)
+    minutes_per_unit = Column(Float, nullable=False)
+    unit = Column(String(20), nullable=False, default=CleaningUnit.per_space.value)
+    is_active = Column(Boolean, default=True)
+    sort_order = Column(Integer, nullable=False, default=0)
+
+    mappings = relationship("SpaceTypeMapping", back_populates="cleaning_space_type")
+    spaces = relationship("BuildingSpace", back_populates="cleaning_space_type")
+
+
+class CleaningSettings(Base):
+    """Singleton-style global workload settings (row id=1)."""
+
+    __tablename__ = "cleaning_settings"
+
+    id = Column(Integer, primary_key=True)
+    workday_minutes = Column(Integer, nullable=False, default=480)
+    # comma-separated preference: polyline_sqft,cad_gross,user_sqft
+    sqft_preference = Column(String(100), nullable=False, default="polyline_sqft,cad_gross,user_sqft")
+
+
+class AimPropertyMapping(Base):
+    """Maps AiM Property code to a campus building."""
+
+    __tablename__ = "aim_property_mappings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    property_code = Column(Integer, unique=True, nullable=False, index=True)
+    building_id = Column(Integer, ForeignKey("buildings.id", ondelete="CASCADE"), nullable=False)
+
+    building = relationship("Building")
+
+
+class SpaceTypeMapping(Base):
+    """Rule to classify an AiM row into a cleaning space type."""
+
+    __tablename__ = "space_type_mappings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    cleaning_space_type_id = Column(
+        Integer, ForeignKey("cleaning_space_types.id", ondelete="CASCADE"), nullable=False
+    )
+    match_field = Column(String(30), nullable=False, default="description")
+    match_kind = Column(String(20), nullable=False, default="contains")
+    match_value = Column(String(200), nullable=False)
+    priority = Column(Integer, nullable=False, default=0)
+    is_active = Column(Boolean, default=True)
+
+    cleaning_space_type = relationship("CleaningSpaceType", back_populates="mappings")
+
+
+class BuildingSpace(Base):
+    """Imported AiM location row for workload calculation."""
+
+    __tablename__ = "building_spaces"
+
+    id = Column(Integer, primary_key=True, index=True)
+    building_id = Column(Integer, ForeignKey("buildings.id", ondelete="CASCADE"), nullable=False)
+    location_code = Column(String(50), nullable=False)
+    description = Column(String(500), nullable=True)
+    primary_type = Column(String(50), nullable=True)
+    location_type_group = Column(String(50), nullable=True)
+    user_sqft = Column(Numeric(12, 2), nullable=True)
+    cad_gross = Column(Numeric(12, 2), nullable=True)
+    polyline_sqft = Column(Numeric(12, 2), nullable=True)
+    effective_sqft = Column(Numeric(12, 2), nullable=True)
+    cleaning_space_type_id = Column(
+        Integer, ForeignKey("cleaning_space_types.id", ondelete="SET NULL"), nullable=True
+    )
+    cleaning_minutes = Column(Float, nullable=False, default=0.0)
+    source_property_code = Column(Integer, nullable=True)
+    import_batch_id = Column(String(36), nullable=False, index=True)
+    imported_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    building = relationship("Building", back_populates="spaces")
+    cleaning_space_type = relationship("CleaningSpaceType", back_populates="spaces")
+
+    __table_args__ = (
+        UniqueConstraint(
+            "building_id",
+            "location_code",
+            "import_batch_id",
+            name="uq_building_space_location_batch",
+        ),
     )
 
 

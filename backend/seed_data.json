@@ -1,0 +1,1163 @@
+{
+  "supervisors": [
+    {
+      "wing": "EWA",
+      "name": "Angel G. Asuncion",
+      "org_code": "MAC1BG",
+      "position_id": "8053",
+      "uh_id": "10339863"
+    },
+    {
+      "wing": "MAUKA",
+      "name": "Wendell Shiroma",
+      "org_code": "MAC3BG",
+      "position_id": "10099",
+      "uh_id": "13729808"
+    },
+    {
+      "wing": "MAKAI",
+      "name": "Aaron Komori",
+      "org_code": "MAC2BG",
+      "position_id": "22325",
+      "uh_id": "10747160"
+    }
+  ],
+  "j3s": [
+    {
+      "group_number": 1,
+      "wing": "EWA",
+      "name": "Robert Yamashiro",
+      "uh_id": "10365105",
+      "position_id": "13517"
+    },
+    {
+      "group_number": 2,
+      "wing": "EWA",
+      "name": "Howard Kahue",
+      "uh_id": "13201148",
+      "position_id": "13518"
+    },
+    {
+      "group_number": 3,
+      "wing": "MAKAI",
+      "name": "Edward Y. Abo",
+      "uh_id": "19401262",
+      "position_id": "13516"
+    },
+    {
+      "group_number": 4,
+      "wing": "MAUKA",
+      "name": "Jason Tanaka",
+      "uh_id": "11036544",
+      "position_id": "900047"
+    },
+    {
+      "group_number": 5,
+      "wing": "MAUKA",
+      "name": "Nora Salas",
+      "uh_id": "11680452",
+      "position_id": "14600"
+    },
+    {
+      "group_number": 6,
+      "wing": "MAKAI",
+      "name": "Danielle Lindo",
+      "uh_id": "15959613",
+      "position_id": "457"
+    },
+    {
+      "group_number": 7,
+      "wing": "EWA",
+      "name": "Anastacia Guittap",
+      "uh_id": "11679977",
+      "position_id": "40097"
+    },
+    {
+      "group_number": 9,
+      "wing": "EWA",
+      "name": "Billy Smith",
+      "uh_id": "22574730",
+      "position_id": "46246"
+    },
+    {
+      "group_number": 10,
+      "wing": "EWA",
+      "name": "Sandra Chang",
+      "uh_id": "22954639",
+      "position_id": "35813"
+    },
+    {
+      "group_number": 11,
+      "wing": "MAKAI",
+      "name": "Louis Laurito",
+      "uh_id": "23092571",
+      "position_id": "11078"
+    },
+    {
+      "group_number": 13,
+      "wing": "MAKAI",
+      "name": "John Marcello",
+      "uh_id": "11684390",
+      "position_id": "27233"
+    },
+    {
+      "group_number": 14,
+      "wing": "EWA",
+      "name": "Chester Baitlon",
+      "uh_id": "29521174",
+      "position_id": "40100"
+    },
+    {
+      "group_number": 15,
+      "wing": "MAKAI",
+      "name": "Sophina Mercado",
+      "uh_id": "28211218",
+      "position_id": "51274"
+    },
+    {
+      "group_number": 16,
+      "wing": "MAUKA",
+      "name": "Xiao Wen Cheng",
+      "uh_id": "12436889",
+      "position_id": "12910"
+    },
+    {
+      "group_number": 17,
+      "wing": "MAUKA",
+      "name": "John W. Cortez Jr.",
+      "uh_id": "11525316",
+      "position_id": "13515"
+    },
+    {
+      "group_number": 18,
+      "wing": "MAUKA",
+      "name": "Lily R. Calumpit",
+      "uh_id": "10994970",
+      "position_id": "21215"
+    },
+    {
+      "group_number": 19,
+      "wing": "MAKAI",
+      "name": "Kyle Wright",
+      "uh_id": "13095410",
+      "position_id": "47536"
+    },
+    {
+      "group_number": 20,
+      "wing": "MAUKA",
+      "name": "Helena F.M. Caires",
+      "uh_id": "14629026",
+      "position_id": "40099"
+    }
+  ],
+  "j2s": [
+    {
+      "first_name": "Beverly",
+      "last_name": "Abad",
+      "group_number": 14,
+      "uh_id": "23090684",
+      "position_id": "11080",
+      "hire_date": "2017-10-16"
+    },
+    {
+      "first_name": "Enrico B.",
+      "last_name": "Acio",
+      "group_number": 4,
+      "uh_id": "21658962",
+      "position_id": "22946",
+      "hire_date": "2011-07-01"
+    },
+    {
+      "first_name": "Brenden",
+      "last_name": "Aiu-Heu",
+      "group_number": 20,
+      "uh_id": "19669154",
+      "position_id": "13699",
+      "hire_date": "2023-04-17"
+    },
+    {
+      "first_name": "Brent",
+      "last_name": "Akana",
+      "group_number": 4,
+      "uh_id": "11427322",
+      "position_id": "18572",
+      "hire_date": "2014-06-23"
+    },
+    {
+      "first_name": "Diana",
+      "last_name": "Alcoran",
+      "group_number": 14,
+      "uh_id": "11080752",
+      "position_id": "46223",
+      "hire_date": "2015-04-27"
+    },
+    {
+      "first_name": "Sahaya M.",
+      "last_name": "Ali",
+      "group_number": 11,
+      "uh_id": "23619392",
+      "position_id": "13689",
+      "hire_date": "2014-07-14"
+    },
+    {
+      "first_name": "Cherry Ann",
+      "last_name": "Alog",
+      "group_number": 16,
+      "uh_id": "23044678",
+      "position_id": "32623",
+      "hire_date": "2019-10-07"
+    },
+    {
+      "first_name": "Louie Jay",
+      "last_name": "Aquino",
+      "group_number": 10,
+      "uh_id": "17197018",
+      "position_id": "51277",
+      "hire_date": "2015-04-20"
+    },
+    {
+      "first_name": "Mohamed",
+      "last_name": "Arshad",
+      "group_number": 6,
+      "uh_id": "29651824",
+      "position_id": "459",
+      "hire_date": "2023-07-24"
+    },
+    {
+      "first_name": "Shari-Lee S.",
+      "last_name": "Asato",
+      "group_number": 17,
+      "uh_id": "12529562",
+      "position_id": "13690",
+      "hire_date": "2003-03-13"
+    },
+    {
+      "first_name": "Gary",
+      "last_name": "Austin",
+      "group_number": 13,
+      "uh_id": "12634218",
+      "position_id": "21214",
+      "hire_date": "2021-10-18"
+    },
+    {
+      "first_name": "Herman A.",
+      "last_name": "Ayers",
+      "group_number": 6,
+      "uh_id": "12302396",
+      "position_id": "22331",
+      "hire_date": "2011-11-01"
+    },
+    {
+      "first_name": "Marlyn",
+      "last_name": "Ayers",
+      "group_number": 6,
+      "uh_id": "29699050",
+      "position_id": "4882",
+      "hire_date": "2023-11-03"
+    },
+    {
+      "first_name": "Evangeline",
+      "last_name": "Bangayan",
+      "group_number": 16,
+      "uh_id": "24314772",
+      "position_id": "22323",
+      "hire_date": "2015-09-28"
+    },
+    {
+      "first_name": "James",
+      "last_name": "Baxa",
+      "group_number": 20,
+      "uh_id": "29529106",
+      "position_id": "22329",
+      "hire_date": "2023-04-11"
+    },
+    {
+      "first_name": "Lance",
+      "last_name": "Belen",
+      "group_number": 10,
+      "uh_id": "26992832",
+      "position_id": "8442",
+      "hire_date": "2019-10-14"
+    },
+    {
+      "first_name": "Rowell",
+      "last_name": "Bolosan",
+      "group_number": 10,
+      "uh_id": "24884966",
+      "position_id": "12492",
+      "hire_date": "2016-09-06"
+    },
+    {
+      "first_name": "Loretta",
+      "last_name": "Burke",
+      "group_number": 4,
+      "uh_id": "13209144",
+      "position_id": "47532",
+      "hire_date": "2023-04-17"
+    },
+    {
+      "first_name": "Helena F.M.",
+      "last_name": "Caires",
+      "group_number": 20,
+      "uh_id": "14629026",
+      "position_id": "40099",
+      "hire_date": "2006-03-06"
+    },
+    {
+      "first_name": "Guillermina P.",
+      "last_name": "Carrillo",
+      "group_number": 1,
+      "uh_id": "17010310",
+      "position_id": "22334",
+      "hire_date": "2006-01-30"
+    },
+    {
+      "first_name": "Cora H.",
+      "last_name": "Chik",
+      "group_number": 9,
+      "uh_id": "11683901",
+      "position_id": "21631",
+      "hire_date": "2000-12-12"
+    },
+    {
+      "first_name": "Jon",
+      "last_name": "Chinen",
+      "group_number": 17,
+      "uh_id": "13464698",
+      "position_id": "458",
+      "hire_date": "2023-03-20"
+    },
+    {
+      "first_name": "Joshua",
+      "last_name": "Chua",
+      "group_number": 19,
+      "uh_id": "19568341",
+      "position_id": "12908",
+      "hire_date": "2012-05-16"
+    },
+    {
+      "first_name": "Ismael Vince C.",
+      "last_name": "Cruz",
+      "group_number": 16,
+      "uh_id": "23970244",
+      "position_id": "110442",
+      "hire_date": "2015-02-02"
+    },
+    {
+      "first_name": "Victoria M.",
+      "last_name": "Dacuag",
+      "group_number": 13,
+      "uh_id": "13650774",
+      "position_id": "21212",
+      "hire_date": "2002-07-29"
+    },
+    {
+      "first_name": "Lance-Lionel",
+      "last_name": "Davis-Zinsman",
+      "group_number": 18,
+      "uh_id": "26757491",
+      "position_id": "8059",
+      "hire_date": "2019-05-01"
+    },
+    {
+      "first_name": "Sander",
+      "last_name": "Dela Cruz",
+      "group_number": 1,
+      "uh_id": "28985167",
+      "position_id": "36228",
+      "hire_date": "2022-07-05"
+    },
+    {
+      "first_name": "Dominador",
+      "last_name": "Doles",
+      "group_number": 16,
+      "uh_id": "24122819",
+      "position_id": "47533",
+      "hire_date": "2015-04-30"
+    },
+    {
+      "first_name": "Eden G.",
+      "last_name": "Domingo",
+      "group_number": 18,
+      "uh_id": "17629819",
+      "position_id": "22328",
+      "hire_date": "2007-04-02"
+    },
+    {
+      "first_name": "Michael I.",
+      "last_name": "Duarte",
+      "group_number": 18,
+      "uh_id": "25947924",
+      "position_id": "13521",
+      "hire_date": "2018-04-16"
+    },
+    {
+      "first_name": "Drexell J.B.",
+      "last_name": "Dumayag",
+      "group_number": 11,
+      "uh_id": "15822089",
+      "position_id": "51275",
+      "hire_date": "2015-04-23"
+    },
+    {
+      "first_name": "Frederick P Jr",
+      "last_name": "Eli",
+      "group_number": 2,
+      "uh_id": "12742126",
+      "position_id": "32621",
+      "hire_date": "2016-02-08"
+    },
+    {
+      "first_name": "Leonora R.",
+      "last_name": "Fujii",
+      "group_number": 19,
+      "uh_id": "23450160",
+      "position_id": "27234",
+      "hire_date": "2014-03-03"
+    },
+    {
+      "first_name": "Lee",
+      "last_name": "Fujinaga",
+      "group_number": 14,
+      "uh_id": "10904406",
+      "position_id": "35866",
+      "hire_date": "2019-07-15"
+    },
+    {
+      "first_name": "Josiah C.",
+      "last_name": "Gabriel",
+      "group_number": 1,
+      "uh_id": "27601975",
+      "position_id": "11081",
+      "hire_date": "2022-09-12"
+    },
+    {
+      "first_name": "Yong Mi",
+      "last_name": "Han",
+      "group_number": 10,
+      "uh_id": "11161019",
+      "position_id": "21630",
+      "hire_date": "1999-02-05"
+    },
+    {
+      "first_name": "Ivan",
+      "last_name": "Hartison",
+      "group_number": 17,
+      "uh_id": "28995645",
+      "position_id": "12491",
+      "hire_date": "2022-07-13"
+    },
+    {
+      "first_name": "Glen",
+      "last_name": "Howard",
+      "group_number": 4,
+      "uh_id": "25057231",
+      "position_id": "10105",
+      "hire_date": "2016-12-01"
+    },
+    {
+      "first_name": "Troy K.",
+      "last_name": "Hussey",
+      "group_number": 9,
+      "uh_id": "19311487",
+      "position_id": "46484",
+      "hire_date": "2019-09-09"
+    },
+    {
+      "first_name": "Blaine",
+      "last_name": "Ideoka",
+      "group_number": 7,
+      "uh_id": "18036317",
+      "position_id": "36226",
+      "hire_date": "2023-10-23"
+    },
+    {
+      "first_name": "Gina D.",
+      "last_name": "Javier",
+      "group_number": 7,
+      "uh_id": "15158132",
+      "position_id": "900046",
+      "hire_date": "2003-06-16"
+    },
+    {
+      "first_name": "Nelia",
+      "last_name": "Jorvina",
+      "group_number": 16,
+      "uh_id": "29655354",
+      "position_id": "13520",
+      "hire_date": "2023-10-05"
+    },
+    {
+      "first_name": "Jason Y.",
+      "last_name": "Kahoaka",
+      "group_number": 11,
+      "uh_id": "10249410",
+      "position_id": "900048",
+      "hire_date": "2019-09-09"
+    },
+    {
+      "first_name": "Jodi-Lyn",
+      "last_name": "Kahue",
+      "group_number": 1,
+      "uh_id": "12703161",
+      "position_id": "18573",
+      "hire_date": "2019-02-04"
+    },
+    {
+      "first_name": "Keali'i",
+      "last_name": "Kahumoku",
+      "group_number": 9,
+      "uh_id": "17405132",
+      "position_id": "21632",
+      "hire_date": "2017-06-13"
+    },
+    {
+      "first_name": "Rodney K.",
+      "last_name": "Kaleikini",
+      "group_number": 10,
+      "uh_id": "22515182",
+      "position_id": "13528",
+      "hire_date": "2013-02-15"
+    },
+    {
+      "first_name": "Jake I.",
+      "last_name": "Kaliko",
+      "group_number": 14,
+      "uh_id": "15704250",
+      "position_id": "15460",
+      "hire_date": "2007-07-09"
+    },
+    {
+      "first_name": "Joseph IKL",
+      "last_name": "Keawe",
+      "group_number": 17,
+      "uh_id": "20749438",
+      "position_id": "460",
+      "hire_date": "2018-04-16"
+    },
+    {
+      "first_name": "Alan",
+      "last_name": "King",
+      "group_number": 19,
+      "uh_id": "28947735",
+      "position_id": "18575",
+      "hire_date": "2022-05-23"
+    },
+    {
+      "first_name": "Kevin K.",
+      "last_name": "Kinoshita",
+      "group_number": 9,
+      "uh_id": "17538442",
+      "position_id": "110439",
+      "hire_date": "2007-03-12"
+    },
+    {
+      "first_name": "Tyler",
+      "last_name": "Kitagawa",
+      "group_number": 3,
+      "uh_id": "15152402",
+      "position_id": "21629",
+      "hire_date": "2016-05-27"
+    },
+    {
+      "first_name": "Anna",
+      "last_name": "Ko",
+      "group_number": 14,
+      "uh_id": "22788425",
+      "position_id": "5844",
+      "hire_date": "2013-02-15"
+    },
+    {
+      "first_name": "Randal",
+      "last_name": "Kunimura",
+      "group_number": 4,
+      "uh_id": "11680340",
+      "position_id": "100899",
+      "hire_date": "2023-06-01"
+    },
+    {
+      "first_name": "Wallace W.K.",
+      "last_name": "Landford",
+      "group_number": 19,
+      "uh_id": "13077949",
+      "position_id": "21633",
+      "hire_date": "2019-09-09"
+    },
+    {
+      "first_name": "Cris",
+      "last_name": "Lariosa",
+      "group_number": 18,
+      "uh_id": "10807620",
+      "position_id": "10104",
+      "hire_date": "2011-11-16"
+    },
+    {
+      "first_name": "Sun Hui",
+      "last_name": "Lee",
+      "group_number": 19,
+      "uh_id": "11161692",
+      "position_id": "8444",
+      "hire_date": "1999-08-02"
+    },
+    {
+      "first_name": "Leonard",
+      "last_name": "Lester",
+      "group_number": 16,
+      "uh_id": "15415639",
+      "position_id": "900049",
+      "hire_date": "2019-05-01"
+    },
+    {
+      "first_name": "Sharon A.",
+      "last_name": "Leu",
+      "group_number": 7,
+      "uh_id": "13776280",
+      "position_id": "13524",
+      "hire_date": "2002-11-07"
+    },
+    {
+      "first_name": "Li Qiu X.",
+      "last_name": "Liu",
+      "group_number": 13,
+      "uh_id": "19360072",
+      "position_id": "11987",
+      "hire_date": "2008-08-15"
+    },
+    {
+      "first_name": "Maidy S.Y.",
+      "last_name": "Lum",
+      "group_number": 13,
+      "uh_id": "10888475",
+      "position_id": "111641",
+      "hire_date": "2001-06-28"
+    },
+    {
+      "first_name": "Marivic A.",
+      "last_name": "Macaraeg",
+      "group_number": 19,
+      "uh_id": "15734630",
+      "position_id": "46245",
+      "hire_date": "2003-12-01"
+    },
+    {
+      "first_name": "Ana Liza V.",
+      "last_name": "Macaulay",
+      "group_number": 7,
+      "uh_id": "11684504",
+      "position_id": "13696",
+      "hire_date": "2001-11-01"
+    },
+    {
+      "first_name": "Evelyn",
+      "last_name": "Mangadlao",
+      "group_number": 3,
+      "uh_id": "30019505",
+      "position_id": "8060",
+      "hire_date": "2024-07-22"
+    },
+    {
+      "first_name": "Shane K.",
+      "last_name": "Matsumoto",
+      "group_number": 4,
+      "uh_id": "10904530",
+      "position_id": "11084",
+      "hire_date": "2011-11-01"
+    },
+    {
+      "first_name": "Kerry",
+      "last_name": "Mayural",
+      "group_number": 19,
+      "uh_id": "23162981",
+      "position_id": "12903",
+      "hire_date": "2013-09-03"
+    },
+    {
+      "first_name": "Carmencita",
+      "last_name": "Mazo",
+      "group_number": 11,
+      "uh_id": "28303481",
+      "position_id": "5843",
+      "hire_date": "2021-10-18"
+    },
+    {
+      "first_name": "Micah",
+      "last_name": "McClinton",
+      "group_number": 14,
+      "uh_id": "19667238",
+      "position_id": "21634",
+      "hire_date": "2014-07-01"
+    },
+    {
+      "first_name": "Maile",
+      "last_name": "Mills",
+      "group_number": 5,
+      "uh_id": "26757384",
+      "position_id": "32626",
+      "hire_date": "2019-05-01"
+    },
+    {
+      "first_name": "Jayson",
+      "last_name": "Mitsunaga",
+      "group_number": 20,
+      "uh_id": "13078630",
+      "position_id": "11077",
+      "hire_date": "2023-02-06"
+    },
+    {
+      "first_name": "Emma B.",
+      "last_name": "Molina",
+      "group_number": 2,
+      "uh_id": "25881774",
+      "position_id": "44090",
+      "hire_date": "2018-02-26"
+    },
+    {
+      "first_name": "Faustino B.",
+      "last_name": "Molina",
+      "group_number": 13,
+      "uh_id": "22482152",
+      "position_id": "12912",
+      "hire_date": "2012-08-09"
+    },
+    {
+      "first_name": "Faustino B. Jr",
+      "last_name": "Molina",
+      "group_number": 17,
+      "uh_id": "29262593",
+      "position_id": "21627",
+      "hire_date": "2022-12-05"
+    },
+    {
+      "first_name": "Craig",
+      "last_name": "Murata",
+      "group_number": 15,
+      "uh_id": "13416251",
+      "position_id": "27238",
+      "hire_date": "2023-08-07"
+    },
+    {
+      "first_name": "Donn",
+      "last_name": "Nagamine",
+      "group_number": 6,
+      "uh_id": "10671557",
+      "position_id": "46222",
+      "hire_date": "2019-01-07"
+    },
+    {
+      "first_name": "Grant T.",
+      "last_name": "Nakayama",
+      "group_number": 15,
+      "uh_id": "11680788",
+      "position_id": "8445",
+      "hire_date": "2001-02-20"
+    },
+    {
+      "first_name": "Lawrence M.",
+      "last_name": "Neves",
+      "group_number": 7,
+      "uh_id": "11684361",
+      "position_id": "38808",
+      "hire_date": "2002-07-29"
+    },
+    {
+      "first_name": "Clifford",
+      "last_name": "Newalu",
+      "group_number": 18,
+      "uh_id": "10343735",
+      "position_id": "461",
+      "hire_date": "2019-04-01"
+    },
+    {
+      "first_name": "Phong T.",
+      "last_name": "Nguyen",
+      "group_number": 2,
+      "uh_id": "15615463",
+      "position_id": "13525",
+      "hire_date": "2003-08-29"
+    },
+    {
+      "first_name": "Kim K.",
+      "last_name": "Nishimura",
+      "group_number": 19,
+      "uh_id": "12588961",
+      "position_id": "13688",
+      "hire_date": "2006-11-14"
+    },
+    {
+      "first_name": "Kenworth",
+      "last_name": "Noa",
+      "group_number": 9,
+      "uh_id": "30181163",
+      "position_id": "21632",
+      "hire_date": "2024-08-07"
+    },
+    {
+      "first_name": "Mary",
+      "last_name": "Occhipinti",
+      "group_number": 6,
+      "uh_id": "22585716",
+      "position_id": "12914",
+      "hire_date": "2012-11-01"
+    },
+    {
+      "first_name": "Sueko",
+      "last_name": "Oshiro",
+      "group_number": 2,
+      "uh_id": "11683166",
+      "position_id": "110668",
+      "hire_date": "2001-02-16"
+    },
+    {
+      "first_name": "Jennifer M.",
+      "last_name": "Paras",
+      "group_number": 15,
+      "uh_id": "12967061",
+      "position_id": "35867",
+      "hire_date": "2014-05-07"
+    },
+    {
+      "first_name": "Geniffer",
+      "last_name": "Pascua",
+      "group_number": 17,
+      "uh_id": "30027781",
+      "position_id": "27238",
+      "hire_date": "2024-07-22"
+    },
+    {
+      "first_name": "John",
+      "last_name": "Pascua",
+      "group_number": 9,
+      "uh_id": "25409552",
+      "position_id": "36758",
+      "hire_date": "2017-06-09"
+    },
+    {
+      "first_name": "Tatsunobu",
+      "last_name": "Patton",
+      "group_number": 15,
+      "uh_id": "10225467",
+      "position_id": "21213",
+      "hire_date": "2023-05-08"
+    },
+    {
+      "first_name": "Ryan",
+      "last_name": "Perkins",
+      "group_number": 2,
+      "uh_id": "29002706",
+      "position_id": "32625",
+      "hire_date": "2022-07-18"
+    },
+    {
+      "first_name": "Macrina",
+      "last_name": "Portela",
+      "group_number": 15,
+      "uh_id": "22969380",
+      "position_id": "35869",
+      "hire_date": "2013-05-28"
+    },
+    {
+      "first_name": "Cynthia",
+      "last_name": "Pudiquet",
+      "group_number": 1,
+      "uh_id": "15379844",
+      "position_id": "462",
+      "hire_date": "2018-04-02"
+    },
+    {
+      "first_name": "Miguel A A II",
+      "last_name": "Ramiscal",
+      "group_number": 3,
+      "uh_id": "23389466",
+      "position_id": "8060",
+      "hire_date": "2014-02-03"
+    },
+    {
+      "first_name": "Susanna",
+      "last_name": "Ramos",
+      "group_number": 3,
+      "uh_id": "23865889",
+      "position_id": "13523",
+      "hire_date": "2014-12-08"
+    },
+    {
+      "first_name": "Aiden",
+      "last_name": "Retuta",
+      "group_number": 9,
+      "uh_id": null,
+      "position_id": "36227",
+      "hire_date": "2025-03-24"
+    },
+    {
+      "first_name": "Caleb",
+      "last_name": "Retuta",
+      "group_number": 1,
+      "uh_id": "27501084",
+      "position_id": "13697",
+      "hire_date": "2020-04-16"
+    },
+    {
+      "first_name": "Cody",
+      "last_name": "Retuta",
+      "group_number": 2,
+      "uh_id": null,
+      "position_id": "100899",
+      "hire_date": "2025-07-16"
+    },
+    {
+      "first_name": "Edwen L.",
+      "last_name": "Retutal",
+      "group_number": 1,
+      "uh_id": "24069344",
+      "position_id": "51279",
+      "hire_date": "2017-10-30"
+    },
+    {
+      "first_name": "Grant M.",
+      "last_name": "Rivera",
+      "group_number": 6,
+      "uh_id": "10342670",
+      "position_id": "13698",
+      "hire_date": "1997-10-10"
+    },
+    {
+      "first_name": "Zaldy",
+      "last_name": "Rivera",
+      "group_number": 7,
+      "uh_id": "23619417",
+      "position_id": "8061",
+      "hire_date": "2014-06-23"
+    },
+    {
+      "first_name": "Scott A.K.",
+      "last_name": "Robello",
+      "group_number": 15,
+      "uh_id": "18125729",
+      "position_id": "11076",
+      "hire_date": "2008-04-14"
+    },
+    {
+      "first_name": "Isaac",
+      "last_name": "Roberts",
+      "group_number": 10,
+      "uh_id": "25658083",
+      "position_id": "27240",
+      "hire_date": "2022-11-28"
+    },
+    {
+      "first_name": "Shun Zhen",
+      "last_name": "Rong",
+      "group_number": 17,
+      "uh_id": "12915414",
+      "position_id": "17467",
+      "hire_date": "2014-09-18"
+    },
+    {
+      "first_name": "Chauncey-Michael",
+      "last_name": "Ross-Camanse",
+      "group_number": 1,
+      "uh_id": "29028025",
+      "position_id": "452",
+      "hire_date": "2022-08-22"
+    },
+    {
+      "first_name": "Fangning",
+      "last_name": "Ruan",
+      "group_number": 6,
+      "uh_id": "21628429",
+      "position_id": "900004",
+      "hire_date": "2016-06-16"
+    },
+    {
+      "first_name": "Misty N.",
+      "last_name": "Sabagala",
+      "group_number": 18,
+      "uh_id": "16286470",
+      "position_id": "465",
+      "hire_date": "2013-08-22"
+    },
+    {
+      "first_name": "Warden",
+      "last_name": "Sacoco",
+      "group_number": 10,
+      "uh_id": "19949184",
+      "position_id": "448",
+      "hire_date": "2021-03-16"
+    },
+    {
+      "first_name": "Eric",
+      "last_name": "Sadoyama",
+      "group_number": 20,
+      "uh_id": "13481969",
+      "position_id": "453",
+      "hire_date": "2018-03-08"
+    },
+    {
+      "first_name": "Terrell H.",
+      "last_name": "Santos-Ayers",
+      "group_number": 13,
+      "uh_id": "26502526",
+      "position_id": "21211",
+      "hire_date": "2024-08-12"
+    },
+    {
+      "first_name": "Glenn",
+      "last_name": "Sato",
+      "group_number": 11,
+      "uh_id": "11080338",
+      "position_id": "11991",
+      "hire_date": "2017-05-16"
+    },
+    {
+      "first_name": "Tyler",
+      "last_name": "Scott",
+      "group_number": 10,
+      "uh_id": "23745694",
+      "position_id": "3594",
+      "hire_date": "2018-12-03"
+    },
+    {
+      "first_name": "Tom",
+      "last_name": "Seiuli",
+      "group_number": 19,
+      "uh_id": "28995639",
+      "position_id": "449",
+      "hire_date": "2022-07-13"
+    },
+    {
+      "first_name": "Akira",
+      "last_name": "Sharp",
+      "group_number": 16,
+      "uh_id": "26167016",
+      "position_id": "12905",
+      "hire_date": "2018-10-01"
+    },
+    {
+      "first_name": "Loree Y.",
+      "last_name": "Shiroma",
+      "group_number": 17,
+      "uh_id": "17425560",
+      "position_id": "13527",
+      "hire_date": "2013-05-13"
+    },
+    {
+      "first_name": "Jenny M.",
+      "last_name": "Son",
+      "group_number": 14,
+      "uh_id": "23567637",
+      "position_id": "40096",
+      "hire_date": "2014-05-07"
+    },
+    {
+      "first_name": "Shawn",
+      "last_name": "Stone",
+      "group_number": 5,
+      "uh_id": "22545119",
+      "position_id": "47534",
+      "hire_date": "2020-06-23"
+    },
+    {
+      "first_name": "Laura",
+      "last_name": "Tabugadir",
+      "group_number": 20,
+      "uh_id": "22482815",
+      "position_id": "27235",
+      "hire_date": "2012-08-27"
+    },
+    {
+      "first_name": "Jon K.",
+      "last_name": "Takeuchi",
+      "group_number": 18,
+      "uh_id": "10419540",
+      "position_id": "9090",
+      "hire_date": "2008-05-12"
+    },
+    {
+      "first_name": "Ivan M.",
+      "last_name": "Tomei",
+      "group_number": 3,
+      "uh_id": "13770359",
+      "position_id": "900488",
+      "hire_date": "2007-10-08"
+    },
+    {
+      "first_name": "Curtis",
+      "last_name": "Torii",
+      "group_number": 18,
+      "uh_id": "2750190",
+      "position_id": "12909",
+      "hire_date": "2020-04-16"
+    },
+    {
+      "first_name": "Mi Suk",
+      "last_name": "Tsukano",
+      "group_number": 17,
+      "uh_id": "11675008",
+      "position_id": "27239",
+      "hire_date": "2000-08-23"
+    },
+    {
+      "first_name": "Li-Wei",
+      "last_name": "Tung",
+      "group_number": 7,
+      "uh_id": "12378620",
+      "position_id": "11990",
+      "hire_date": "2017-04-20"
+    },
+    {
+      "first_name": "Darren",
+      "last_name": "Uehara",
+      "group_number": 13,
+      "uh_id": "13175407",
+      "position_id": "11984",
+      "hire_date": "2016-09-27"
+    },
+    {
+      "first_name": "Ryan",
+      "last_name": "Velasco",
+      "group_number": 3,
+      "uh_id": "23567944",
+      "position_id": "9093",
+      "hire_date": "2014-05-12"
+    },
+    {
+      "first_name": "Rebecca",
+      "last_name": "Waiwaiole",
+      "group_number": 11,
+      "uh_id": "11679526",
+      "position_id": "110441",
+      "hire_date": "2000-03-03"
+    },
+    {
+      "first_name": "Lilibeth",
+      "last_name": "Yacas",
+      "group_number": 20,
+      "uh_id": "30027769",
+      "position_id": "13699",
+      "hire_date": "2024-09-18"
+    },
+    {
+      "first_name": "Tim Wan",
+      "last_name": "Yeung",
+      "group_number": 15,
+      "uh_id": "11161456",
+      "position_id": "51276",
+      "hire_date": "1999-02-09"
+    },
+    {
+      "first_name": "Reid",
+      "last_name": "Yoshihiro",
+      "group_number": 20,
+      "uh_id": "12444133",
+      "position_id": "11083",
+      "hire_date": "2013-05-28"
+    },
+    {
+      "first_name": "Stephen K.",
+      "last_name": "Young",
+      "group_number": 18,
+      "uh_id": "10344671",
+      "position_id": "11988",
+      "hire_date": "1990-12-03"
+    }
+  ]
+}

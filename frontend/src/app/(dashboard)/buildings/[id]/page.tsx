@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 import { toast } from "sonner"
 
+import { BuildingWorkloadCard } from "@/components/buildings/BuildingWorkloadCard"
 import { FloorPlanPartitionEditor } from "@/components/buildings/FloorPlanPartitionEditor"
 import { Button } from "@/components/ui/button"
 import {
@@ -377,6 +378,8 @@ export default function BuildingDetailPage() {
                   )}
                 </CardContent>
               </Card>
+
+              {validId != null && <BuildingWorkloadCard buildingId={validId} />}
 
               <Card>
                 <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">

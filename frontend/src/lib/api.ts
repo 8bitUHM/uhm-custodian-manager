@@ -24,6 +24,16 @@ import type {
   Supervisor,
   SupervisorCreate,
   SupervisorUpdate,
+  CleaningSpaceType,
+  CleaningSpaceTypeUpdate,
+  CleaningSpaceTypeCreate,
+  CleaningSettings,
+  CleaningSettingsUpdate,
+  SpaceTypeMapping,
+  SpaceTypeMappingCreate,
+  BuildingWorkload,
+  WorkloadSummaryRow,
+  AimImportResult,
 } from "./types"
 
 const API_BASE =
@@ -223,6 +233,104 @@ export const api = {
       const { data } = await http.get<PartitionScheduleResponse>(
         `/api/buildings/${buildingId}/partition-schedule`,
         { params: cleanParams(params as Record<string, unknown>) }
+      )
+      return data
+    },
+
+    async importSpaces(
+      buildingId: number,
+      file: File
+    ): Promise<AimImportResult> {
+      const form = new FormData()
+      form.append("file", file)
+      const { data } = await http.post<AimImportResult>(
+        `/api/buildings/${buildingId}/spaces/import`,
+        form,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      )
+      return data
+    },
+
+    async getWorkload(buildingId: number): Promise<BuildingWorkload> {
+      const { data } = await http.get<BuildingWorkload>(
+        `/api/buildings/${buildingId}/workload`
+      )
+      return data
+    },
+
+    async recomputeWorkload(buildingId: number): Promise<{ spaces_updated: number }> {
+      const { data } = await http.post<{ spaces_updated: number }>(
+        `/api/buildings/${buildingId}/workload/recompute`
+      )
+      return data
+    },
+  },
+
+  cleaningStandards: {
+    async listTypes(): Promise<CleaningSpaceType[]> {
+      const { data } = await http.get<CleaningSpaceType[]>(
+        "/api/cleaning-standards/types"
+      )
+      return data
+    },
+    async updateType(
+      id: number,
+      payload: CleaningSpaceTypeUpdate
+    ): Promise<CleaningSpaceType> {
+      const { data } = await http.put<CleaningSpaceType>(
+        `/api/cleaning-standards/types/${id}`,
+        payload
+      )
+      return data
+    },
+    async createType(
+      payload: CleaningSpaceTypeCreate
+    ): Promise<CleaningSpaceType> {
+      const { data } = await http.post<CleaningSpaceType>(
+        "/api/cleaning-standards/types",
+        payload
+      )
+      return data
+    },
+    async getSettings(): Promise<CleaningSettings> {
+      const { data } = await http.get<CleaningSettings>(
+        "/api/cleaning-standards/settings"
+      )
+      return data
+    },
+    async updateSettings(
+      payload: CleaningSettingsUpdate
+    ): Promise<CleaningSettings> {
+      const { data } = await http.put<CleaningSettings>(
+        "/api/cleaning-standards/settings",
+        payload
+      )
+      return data
+    },
+    async listMappings(): Promise<SpaceTypeMapping[]> {
+      const { data } = await http.get<SpaceTypeMapping[]>(
+        "/api/cleaning-standards/mappings"
+      )
+      return data
+    },
+    async createMapping(
+      payload: SpaceTypeMappingCreate
+    ): Promise<SpaceTypeMapping> {
+      const { data } = await http.post<SpaceTypeMapping>(
+        "/api/cleaning-standards/mappings",
+        payload
+      )
+      return data
+    },
+    async deleteMapping(id: number): Promise<void> {
+      await http.delete(`/api/cleaning-standards/mappings/${id}`)
+    },
+  },
+
+  workload: {
+    async summary(): Promise<WorkloadSummaryRow[]> {
+      const { data } = await http.get<WorkloadSummaryRow[]>(
+        "/api/workload/summary"
       )
       return data
     },

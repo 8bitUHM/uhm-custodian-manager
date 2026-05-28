@@ -27,6 +27,48 @@ from database import SessionLocal
 from models import Building, BuildingPartitionRotation, Custodian, J3, Supervisor
 
 DATA_FILE = Path(__file__).with_name("seed_data.json")
+SEED_BUILDINGS = [
+    {
+        "name": "Shidler",
+        "address": "University of Hawaiʻi at Mānoa",
+        "building_code": "SHIDLER",
+        "floors": 6,
+        "description": "Shidler Hall of Business",
+        "public_slug": "shidler",
+    },
+    {
+        "name": "POST",
+        "address": "University of Hawaiʻi at Mānoa",
+        "building_code": "POST",
+        "floors": 9,
+        "description": "POST building",
+        "public_slug": "post",
+    },
+    {
+        "name": "Moore",
+        "address": "University of Hawaiʻi at Mānoa",
+        "building_code": "MOORE",
+        "floors": 8,
+        "description": "Moore Hall",
+        "public_slug": "moore",
+    },
+    {
+        "name": "LSB",
+        "address": "University of Hawaiʻi at Mānoa",
+        "building_code": "LSB",
+        "floors": None,
+        "description": "Life Sciences Building",
+        "public_slug": "lsb",
+    },
+    {
+        "name": "Hawaii Hall",
+        "address": "University of Hawaiʻi at Mānoa",
+        "building_code": "HAWAII",
+        "floors": 3,
+        "description": "Hawaii Hall",
+        "public_slug": "hawaii",
+    },
+]
 
 
 def _parse_date(value: str | None) -> datetime | None:
@@ -36,6 +78,41 @@ def _parse_date(value: str | None) -> datetime | None:
         return datetime.fromisoformat(value)
     except ValueError:
         return None
+
+
+def _upsert_seed_buildings(db: Session) -> None:
+    for payload in SEED_BUILDINGS:
+        b = (
+            db.query(Building)
+            .filter(Building.building_code == payload["building_code"])
+            .first()
+        )
+        if b is None:
+            db.add(
+                Building(
+                    name=payload["name"],
+                    address=payload["address"],
+                    building_code=payload["building_code"],
+                    floors=payload["floors"],
+                    description=payload["description"],
+                    public_slug=payload["public_slug"],
+                    is_active=True,
+                )
+            )
+            print(
+                f"Added building: {payload['name']} "
+                f"(public_slug={payload['public_slug']})."
+            )
+            continue
+
+        # Keep viewer identity fields in sync without overwriting custom edits.
+        b.name = payload["name"]
+        b.public_slug = payload["public_slug"]
+        if payload["floors"] is not None:
+            b.floors = payload["floors"]
+        if not b.address:
+            b.address = payload["address"]
+    db.commit()
 
 
 def seed() -> None:
@@ -117,29 +194,7 @@ def seed() -> None:
         n_cust = db.query(Custodian).count()
         print(f"Seeded {n_sup} SIIs, {n_j3} JIIIs, {n_cust} JIIs.")
 
-        sh = db.query(Building).filter(Building.building_code == "SHIDLER").first()
-        if sh is None:
-            db.add(
-                Building(
-                    name="Shidler",
-                    address="University of Hawaiʻi at Mānoa",
-                    building_code="SHIDLER",
-                    floors=6,
-                    description="Shidler Hall of Business",
-                    public_slug="shidler",
-                    is_active=True,
-                )
-            )
-            db.commit()
-            print("Added building: Shidler (public_slug=shidler).")
-        else:
-            # Keep slug/name in sync for the viewer without wiping local edits.
-            sh.name = "Shidler"
-            sh.public_slug = "shidler"
-            sh.floors = 6
-            if not sh.address:
-                sh.address = "University of Hawaiʻi at Mānoa"
-            db.commit()
+        _upsert_seed_buildings(db)
 
         # Link Shidler to all Janitor IIs in work group 4 (Jason Tanaka).
         sh = db.query(Building).filter(Building.building_code == "SHIDLER").first()
